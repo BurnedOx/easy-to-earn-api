@@ -9,6 +9,7 @@ import { Withdrawal } from "./withdrawal.entity";
 import { Transaction } from "./transaction.entity";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
+import { Expose } from "class-transformer";
 
 @Entity()
 export class User extends Base {
@@ -67,6 +68,11 @@ export class User extends Base {
 
     @OneToMany(() => Transaction, trx => trx.owner)
     trx: Transaction[];
+
+    @Expose()
+    get isAutopooled() {
+        return this.sponsored.length >= 3;
+    }
 
     @BeforeInsert()
     async hashPassword() {

@@ -1,11 +1,16 @@
 import { RankData } from "src/interfaces";
 
 export const levelIncomeAmount = {
-    1: 30,
-    2: 10,
-    3: 5,
-    4: 5,
-    5: 4
+    1: 200,
+    2: 30,
+    3: 20,
+    4: 10,
+    5: 5,
+    6: 5,
+    7: 5,
+    8: 5,
+    9: 5,
+    10: 5
 };
 
 export const Ranks: RankData[] = [
