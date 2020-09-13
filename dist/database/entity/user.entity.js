@@ -20,9 +20,13 @@ const withdrawal_entity_1 = require("./withdrawal.entity");
 const transaction_entity_1 = require("./transaction.entity");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
+const class_transformer_1 = require("class-transformer");
 let User = (() => {
     var User_1;
     let User = User_1 = class User extends base_entity_1.Base {
+        get isAutopooled() {
+            return this.sponsored.length >= 3;
+        }
         async hashPassword() {
             this.password = await bcrypct.hash(this.password, 10);
         }
@@ -139,6 +143,11 @@ let User = (() => {
         typeorm_1.OneToMany(() => transaction_entity_1.Transaction, trx => trx.owner),
         __metadata("design:type", Array)
     ], User.prototype, "trx", void 0);
+    __decorate([
+        class_transformer_1.Expose(),
+        __metadata("design:type", Object),
+        __metadata("design:paramtypes", [])
+    ], User.prototype, "isAutopooled", null);
     __decorate([
         typeorm_1.BeforeInsert(),
         __metadata("design:type", Function),

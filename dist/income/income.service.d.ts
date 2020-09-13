@@ -10,4 +10,5 @@ export declare class IncomeService {
     getIncomes(userId: string): Promise<import("../interfaces").IncomeRO[]>;
     removePayments(incomes: Income[], trx: EntityManager): Promise<void>;
     generateIncomes(from: User, trx: EntityManager): Promise<void>;
+    private generateLeadershipBonus;
 }

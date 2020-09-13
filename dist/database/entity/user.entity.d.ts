@@ -24,6 +24,7 @@ export declare class User extends Base {
     ranks: Rank[];
     withdrawals: Withdrawal[];
     trx: Transaction[];
+    get isAutopooled(): boolean;
     hashPassword(): Promise<void>;
     static findById(id: string): import("rxjs").Observable<User>;
     static getDownline(root: User, downline?: {
