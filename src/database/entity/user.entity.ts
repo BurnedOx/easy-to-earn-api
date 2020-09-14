@@ -92,6 +92,15 @@ export class User extends Base {
         );
     }
 
+    public static findDirectForRapid(sponsorId: string, startDate: Date, endDate: Date) {
+        return this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.sponsoredBy', 'sponsoredBy')
+            .where("sponsoredBy.id = :sponsorId", { sponsorId })
+            .andWhere("DATE_FORMAT(user.activatedAt, '%Y-%m-%d') BETWEEN CAST(:startDate as date) AND CAST(:endDate as date)",
+                { startDate, endDate })
+            .getManyAndCount();
+    }
+
     public static async getDownline(
         root: User,
         downline: { member: User; level: number }[] = [],
@@ -107,6 +116,24 @@ export class User extends Base {
             await this.getDownline(member, downline, level + 1);
         }
         return downline;
+    }
+
+    public static async creditBalance(id: string, amount: number) {
+        const user = await this.findOne(id);
+        const result = await this.update(id, { balance: user.balance + amount });
+        if (result.affected && result.affected === 0) {
+            throw Error("No changed made to the user. Entity might be missing. Check " + id);
+        }
+        return this.findOne(id).then(result => result ?? null);
+    }
+
+    public static async debitBalance(id: string, amount: number) {
+        const user = await this.findOne(id);
+        const result = await this.update(id, { balance: user.balance - amount });
+        if (result.affected && result.affected === 0) {
+            throw Error("No changed made to the user. Entity might be missing. Check " + id);
+        }
+        return this.findOne(id).then(result => result ?? null);
     }
 
     toResponseObject(token?: string): UserRO {

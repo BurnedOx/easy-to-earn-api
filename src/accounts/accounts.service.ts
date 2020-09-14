@@ -13,6 +13,7 @@ import { JwtService } from '@nestjs/jwt';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AWSHandler } from 'src/common/aws/aws';
+import { RapidService } from 'src/rapid/rapid.service';
 
 @Injectable()
 export class AccountsService {
@@ -26,6 +27,8 @@ export class AccountsService {
         private readonly incomeService: IncomeService,
 
         private readonly rankService: RankService,
+
+        private readonly rapidService: RapidService,
 
         private readonly jwtService: JwtService,
 
@@ -165,6 +168,7 @@ export class AccountsService {
             user.activatedAt = new Date();
             await trx.save(user);
             await this.incomeService.generateIncomes(user, trx);
+            await this.rapidService.newChallenge(user, trx);
         });
 
         const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });

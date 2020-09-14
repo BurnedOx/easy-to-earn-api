@@ -11,12 +11,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from 'src/common/guards/jwt.guard';
 import { JwtStrategy } from 'src/common/guards/jwt.strategy';
 import { AWSHandler } from 'src/common/aws/aws';
+import { RapidModule } from 'src/rapid/rapid.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User, EPin]),
     RankModule,
     IncomeModule,
+    RapidModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

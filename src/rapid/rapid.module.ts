@@ -4,6 +4,7 @@ import { RapidService } from './rapid.service';
 
 @Module({
   controllers: [RapidController],
-  providers: [RapidService]
+  providers: [RapidService],
+  exports: [RapidService]
 })
 export class RapidModule {}
