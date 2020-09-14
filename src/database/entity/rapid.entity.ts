@@ -32,13 +32,21 @@ export class Rapid extends Base {
         return aDate.diff(bDate, 'days');
     }
 
+    public static findByOwner(ownerId: string) {
+        return this.createQueryBuilder('rapid')
+            .leftJoin('rapid.owner', 'owner')
+            .where("owner.id = :ownerId", {ownerId})
+            .getOne()
+            .then(b => b ?? null);
+    }
+
     public static findIncomplete() {
         return this.find({ where: { status: 'incomplete' }, relations: ["owner"] });
     }
 
     public static async updateToNext(ids: string[], endDate: Date) {
         const result = await this.update(ids, {
-            amount: 5000,
+            amount: 2500,
             target: 30,
             endDate
         });

@@ -20,6 +20,7 @@ const config_1 = require("@nestjs/config");
 const jwt_guard_1 = require("../common/guards/jwt.guard");
 const jwt_strategy_1 = require("../common/guards/jwt.strategy");
 const aws_1 = require("../common/aws/aws");
+const rapid_module_1 = require("../rapid/rapid.module");
 let AccountsModule = (() => {
     let AccountsModule = class AccountsModule {
     };
@@ -29,6 +30,7 @@ let AccountsModule = (() => {
                 typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, epin_entity_1.EPin]),
                 rank_module_1.RankModule,
                 income_module_1.IncomeModule,
+                rapid_module_1.RapidModule,
                 jwt_1.JwtModule.registerAsync({
                     imports: [config_1.ConfigModule],
                     inject: [config_1.ConfigService],

@@ -26,13 +26,15 @@ const jwt_1 = require("@nestjs/jwt");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const aws_1 = require("../common/aws/aws");
+const rapid_service_1 = require("../rapid/rapid.service");
 let AccountsService = (() => {
     let AccountsService = class AccountsService {
-        constructor(userRepo, epinRepo, incomeService, rankService, jwtService, aws) {
+        constructor(userRepo, epinRepo, incomeService, rankService, rapidService, jwtService, aws) {
             this.userRepo = userRepo;
             this.epinRepo = epinRepo;
             this.incomeService = incomeService;
             this.rankService = rankService;
+            this.rapidService = rapidService;
             this.jwtService = jwtService;
             this.aws = aws;
         }
@@ -142,6 +144,7 @@ let AccountsService = (() => {
                 user.activatedAt = new Date();
                 await trx.save(user);
                 await this.incomeService.generateIncomes(user, trx);
+                await this.rapidService.newChallenge(user, trx);
             });
             const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });
             if (sponsor.sponsored.length === 3) {
@@ -229,6 +232,7 @@ let AccountsService = (() => {
             typeorm_2.Repository,
             income_service_1.IncomeService,
             rank_service_1.RankService,
+            rapid_service_1.RapidService,
             jwt_1.JwtService,
             aws_1.AWSHandler])
     ], AccountsService);

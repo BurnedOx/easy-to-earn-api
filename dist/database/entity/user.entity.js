@@ -21,6 +21,7 @@ const transaction_entity_1 = require("./transaction.entity");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const class_transformer_1 = require("class-transformer");
+const rapid_entity_1 = require("./rapid.entity");
 let User = (() => {
     var User_1;
     let User = User_1 = class User extends base_entity_1.Base {
@@ -33,6 +34,13 @@ let User = (() => {
         static findById(id) {
             return rxjs_1.from(this.findOne({ id })).pipe(operators_1.map((user) => user));
         }
+        static findDirectForRapid(sponsorId, startDate, endDate) {
+            return this.createQueryBuilder('user')
+                .leftJoinAndSelect('user.sponsoredBy', 'sponsoredBy')
+                .where("sponsoredBy.id = :sponsorId", { sponsorId })
+                .andWhere("DATE_FORMAT(user.activatedAt, '%Y-%m-%d') BETWEEN CAST(:startDate as date) AND CAST(:endDate as date)", { startDate, endDate })
+                .getManyAndCount();
+        }
         static async getDownline(root, downline = [], level = 1) {
             const members = await this.find({
                 where: { sponsoredBy: root },
@@ -43,6 +51,22 @@ let User = (() => {
                 await this.getDownline(member, downline, level + 1);
             }
             return downline;
+        }
+        static async creditBalance(id, amount) {
+            const user = await this.findOne(id);
+            const result = await this.update(id, { balance: user.balance + amount });
+            if (result.affected && result.affected === 0) {
+                throw Error("No changed made to the user. Entity might be missing. Check " + id);
+            }
+            return this.findOne(id).then(result => result !== null && result !== void 0 ? result : null);
+        }
+        static async debitBalance(id, amount) {
+            const user = await this.findOne(id);
+            const result = await this.update(id, { balance: user.balance - amount });
+            if (result.affected && result.affected === 0) {
+                throw Error("No changed made to the user. Entity might be missing. Check " + id);
+            }
+            return this.findOne(id).then(result => result !== null && result !== void 0 ? result : null);
         }
         toResponseObject(token) {
             var _a, _b;
@@ -127,6 +151,10 @@ let User = (() => {
         typeorm_1.OneToMany(() => income_entity_1.Income, income => income.owner),
         __metadata("design:type", Array)
     ], User.prototype, "incomes", void 0);
+    __decorate([
+        typeorm_1.OneToMany(() => rapid_entity_1.Rapid, rapid => rapid.owner),
+        __metadata("design:type", Array)
+    ], User.prototype, "challenges", void 0);
     __decorate([
         typeorm_1.OneToMany(() => income_entity_1.Income, income => income.from),
         __metadata("design:type", Array)

@@ -5,6 +5,7 @@ import { Income } from "./income.entity";
 import { Rank } from "./rank.entity";
 import { Withdrawal } from "./withdrawal.entity";
 import { Transaction } from "./transaction.entity";
+import { Rapid } from "./rapid.entity";
 export declare class User extends Base {
     name: string;
     mobile: number;
@@ -20,6 +21,7 @@ export declare class User extends Base {
     sponsoredBy: User | null;
     epin: EPin | null;
     incomes: Income[];
+    challenges: Rapid[];
     generatedIncomes: Income[];
     ranks: Rank[];
     withdrawals: Withdrawal[];
@@ -27,6 +29,7 @@ export declare class User extends Base {
     get isAutopooled(): boolean;
     hashPassword(): Promise<void>;
     static findById(id: string): import("rxjs").Observable<User>;
+    static findDirectForRapid(sponsorId: string, startDate: Date, endDate: Date): Promise<[User[], number]>;
     static getDownline(root: User, downline?: {
         member: User;
         level: number;
@@ -34,6 +37,8 @@ export declare class User extends Base {
         member: User;
         level: number;
     }[]>;
+    static creditBalance(id: string, amount: number): Promise<User>;
+    static debitBalance(id: string, amount: number): Promise<User>;
     toResponseObject(token?: string): UserRO;
     toMemberObject(level: number): MemberRO;
     toAutopoolMemberObject(): AutopoolMemberRO;

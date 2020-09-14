@@ -8,14 +8,16 @@ import { UserDetailsRO, UserRO } from 'src/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AWSHandler } from 'src/common/aws/aws';
+import { RapidService } from 'src/rapid/rapid.service';
 export declare class AccountsService {
     private readonly userRepo;
     private readonly epinRepo;
     private readonly incomeService;
     private readonly rankService;
+    private readonly rapidService;
     private readonly jwtService;
     private readonly aws;
-    constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, incomeService: IncomeService, rankService: RankService, jwtService: JwtService, aws: AWSHandler);
+    constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, incomeService: IncomeService, rankService: RankService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
     findOne(id: string): Observable<UserRO>;
     getAll(): Promise<UserRO[]>;
     login(data: LoginDTO, admin?: boolean): Promise<UserRO>;

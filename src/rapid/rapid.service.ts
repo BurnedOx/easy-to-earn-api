@@ -8,6 +8,10 @@ import { EntityManager, getManager } from 'typeorm';
 
 @Injectable()
 export class RapidService {
+    findByUser(userId: string) {
+        return Rapid.findByOwner(userId);
+    }
+
     async newChallenge(owner: User, trx?: EntityManager) {
         const startDate = new Date();
         const endDate = new Date(moment().add(7, 'days').set('hours', 23).set('minutes', 59).set('seconds', 0).format())
@@ -39,7 +43,7 @@ export class RapidService {
                 completed.push(rapid);
             } else if (rapid.days === 7) {
                 incomplete7days.push(rapid);
-            } else if (rapid.days === 30) {
+            } else if (rapid.days === 28) {
                 incomplete30days.push(rapid);
             }
         }
@@ -63,7 +67,7 @@ export class RapidService {
     }
 
     private async handleConvertTo30(rapids: Rapid[]) {
-        const endDate = new Date(moment().add(23, 'days').set('hours', 23).set('minutes', 59).set('seconds', 0).format());
+        const endDate = new Date(moment().add(21, 'days').set('hours', 23).set('minutes', 59).set('seconds', 0).format());
         await Rapid.updateToNext(rapids.map(r => r.id), endDate);
     }
 

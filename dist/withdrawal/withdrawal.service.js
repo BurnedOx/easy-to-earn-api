@@ -159,13 +159,13 @@ let WithdrawalService = (() => {
         getTimes() {
             const indiaTime = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
             const morning = new Date(indiaTime);
-            morning.setHours(9);
+            morning.setHours(6);
             morning.setMinutes(0);
             morning.setSeconds(0);
             morning.setMilliseconds(0);
-            const noon = new Date(morning);
-            noon.setHours(14);
-            return [morning, noon];
+            const evening = new Date(morning);
+            evening.setHours(18);
+            return [morning, evening];
         }
     };
     WithdrawalService = __decorate([
