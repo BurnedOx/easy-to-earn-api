@@ -10,6 +10,7 @@ import { Transaction } from "./transaction.entity";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Expose } from "class-transformer";
+import { Rapid } from "./rapid.entity";
 
 @Entity()
 export class User extends Base {
@@ -56,6 +57,9 @@ export class User extends Base {
 
     @OneToMany(() => Income, income => income.owner)
     incomes: Income[];
+
+    @OneToMany(() => Rapid, rapid => rapid.owner)
+    challenges: Rapid[];
 
     @OneToMany(() => Income, income => income.from)
     generatedIncomes: Income[];

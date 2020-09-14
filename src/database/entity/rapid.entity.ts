@@ -1,7 +1,8 @@
 import { Expose } from "class-transformer";
 import moment = require("moment");
-import { Column, Entity } from "typeorm";
+import { Column, Entity, ManyToOne } from "typeorm";
 import { Base } from "./base.entity";
+import { User } from "./user.entity";
 
 @Entity()
 export class Rapid extends Base {
@@ -16,6 +17,9 @@ export class Rapid extends Base {
 
     @Column({ default: 'incomplete' })
     status: 'incomplete' | 'complete';
+
+    @ManyToOne(() => User, user => user.challenges, {onDelete: 'CASCADE'})
+    owner: User;
 
     @Expose()
     get days() {
