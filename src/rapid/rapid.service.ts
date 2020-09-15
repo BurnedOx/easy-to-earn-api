@@ -8,8 +8,14 @@ import { EntityManager, getManager } from 'typeorm';
 
 @Injectable()
 export class RapidService {
-    findByUser(userId: string) {
-        return Rapid.findByOwner(userId);
+    async findByUser(userId: string) {
+        const rapid = await Rapid.findByOwner(userId);
+        if (!rapid) {
+            return null;
+        }
+        const [direct, count] = await User.findDirectForRapid(rapid.owner.id, rapid.startDate, rapid.endDate);
+        const days = this.getDays(rapid.startDate, rapid.endDate);
+        return { ...rapid, done: count, days };
     }
 
     async newChallenge(owner: User, trx?: EntityManager) {
@@ -39,11 +45,12 @@ export class RapidService {
         const incomplete30days: Rapid[] = [];
         for (let rapid of rapids) {
             const [directs, count] = await User.findDirectForRapid(rapid.owner.id, rapid.startDate, rapid.endDate);
+            const days = this.getDays(rapid.startDate, rapid.endDate);
             if (rapid.target <= count) {
                 completed.push(rapid);
-            } else if (rapid.days === 7) {
+            } else if (days === 7) {
                 incomplete7days.push(rapid);
-            } else if (rapid.days === 28) {
+            } else if (days === 28) {
                 incomplete30days.push(rapid);
             }
         }
@@ -73,5 +80,11 @@ export class RapidService {
 
     private handleStartNew(rapids: Rapid[], trx: EntityManager) {
         return Promise.all(rapids.map(r => this.newChallenge(r.owner, trx)));
+    }
+
+    private getDays(startDate: Date, endDate: Date) {
+        const aDate = moment([startDate.getFullYear(), startDate.getMonth(), startDate.getDate()]);
+        const bDate = moment([endDate.getFullYear(), endDate.getMonth(), endDate.getDate()]);
+        return bDate.diff(aDate, 'days');
     }
 }

@@ -19,8 +19,14 @@ const user_entity_1 = require("../database/entity/user.entity");
 const typeorm_1 = require("typeorm");
 let RapidService = (() => {
     let RapidService = class RapidService {
-        findByUser(userId) {
-            return rapid_entity_1.Rapid.findByOwner(userId);
+        async findByUser(userId) {
+            const rapid = await rapid_entity_1.Rapid.findByOwner(userId);
+            if (!rapid) {
+                return null;
+            }
+            const [direct, count] = await user_entity_1.User.findDirectForRapid(rapid.owner.id, rapid.startDate, rapid.endDate);
+            const days = this.getDays(rapid.startDate, rapid.endDate);
+            return Object.assign(Object.assign({}, rapid), { done: count, days });
         }
         async newChallenge(owner, trx) {
             const startDate = new Date();
@@ -46,13 +52,14 @@ let RapidService = (() => {
             const incomplete30days = [];
             for (let rapid of rapids) {
                 const [directs, count] = await user_entity_1.User.findDirectForRapid(rapid.owner.id, rapid.startDate, rapid.endDate);
+                const days = this.getDays(rapid.startDate, rapid.endDate);
                 if (rapid.target <= count) {
                     completed.push(rapid);
                 }
-                else if (rapid.days === 7) {
+                else if (days === 7) {
                     incomplete7days.push(rapid);
                 }
-                else if (rapid.days === 28) {
+                else if (days === 28) {
                     incomplete30days.push(rapid);
                 }
             }
@@ -79,6 +86,11 @@ let RapidService = (() => {
         }
         handleStartNew(rapids, trx) {
             return Promise.all(rapids.map(r => this.newChallenge(r.owner, trx)));
+        }
+        getDays(startDate, endDate) {
+            const aDate = moment([startDate.getFullYear(), startDate.getMonth(), startDate.getDate()]);
+            const bDate = moment([endDate.getFullYear(), endDate.getMonth(), endDate.getDate()]);
+            return bDate.diff(aDate, 'days');
         }
     };
     __decorate([

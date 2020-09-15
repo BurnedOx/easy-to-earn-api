@@ -3086,14 +3086,9 @@
         "signature": "097d4bf3331df1e138ffdcf92e1117f6841bc8337170d927fd955d5ee8a1674b",
         "affectsGlobalScope": false
       },
-      "../node_modules/moment/ts3.1-typings/moment.d.ts": {
-        "version": "ee08b4d535febfed2ab0ed4a943c26eee9646a0b6fd674552d925544e0e0afd4",
-        "signature": "ee08b4d535febfed2ab0ed4a943c26eee9646a0b6fd674552d925544e0e0afd4",
-        "affectsGlobalScope": false
-      },
       "../src/database/entity/rapid.entity.ts": {
-        "version": "804dfbafc062e7edcac31e1943a57052a47b6ec702cccbf92206d67eb2187539",
-        "signature": "75de390f903b2299f0743d6e33c33818778345bebf945e0108465a4976f59e70",
+        "version": "26f60ae41368fc7920a1c4f173a8553a8c1cc031e1912a36cd537cf4df4c8bee",
+        "signature": "7989425e695e6f089b1e845adacfc1eac1bb816b9cf6f44a7a3f6f29b083ffbe",
         "affectsGlobalScope": false
       },
       "../src/database/entity/user.entity.ts": {
@@ -5376,9 +5371,14 @@
         "signature": "a107fecad08f6bc1474035a87dc3408b00a0be1cae6d02493a99474d2044ae28",
         "affectsGlobalScope": false
       },
+      "../node_modules/moment/ts3.1-typings/moment.d.ts": {
+        "version": "ee08b4d535febfed2ab0ed4a943c26eee9646a0b6fd674552d925544e0e0afd4",
+        "signature": "ee08b4d535febfed2ab0ed4a943c26eee9646a0b6fd674552d925544e0e0afd4",
+        "affectsGlobalScope": false
+      },
       "../src/rapid/rapid.service.ts": {
-        "version": "bbc2e513762f98a05220ad44cf569151f2e36d21327d9eac3caa960fbf1e8fce",
-        "signature": "d0b6f754a6aafec8ce57b25cf219ff9126bb035ab5852f65abe9f03924d7841d",
+        "version": "082dd96b468b54059315bc4c1c5b7edf9ac42a09c9881cef7eb541ed15595b16",
+        "signature": "508ff9039ddc75fea59615a7d276314b00362bd9a8064850d29fe8895fe74668",
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.service.ts": {
@@ -5808,7 +5808,7 @@
       },
       "../src/rapid/rapid.controller.ts": {
         "version": "f3e843a6f4d58a996ff7c0df768075d0c746d7e0bfa667d6b42479144ace60c5",
-        "signature": "db4092475e05eba7055cf9b3514a344d893dcbf5613dfec9faa19e65ba22108e",
+        "signature": "e06dd138a5800665e35656bb665cb994c63cc4777d685fad8098981c1f5e1af8",
         "affectsGlobalScope": false
       },
       "../src/rapid/rapid.module.ts": {
@@ -18163,8 +18163,6 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
-        "../node_modules/class-transformer/index.d.ts",
-        "../node_modules/moment/ts3.1-typings/moment.d.ts",
         "../node_modules/typeorm/index.d.ts",
         "../src/database/entity/base.entity.ts",
         "../src/database/entity/user.entity.ts"
@@ -30426,7 +30424,7 @@
       ],
       "../src/rapid/rapid.controller.ts": [
         "../src/common/dto/base-header.dto.ts",
-        "../src/database/entity/rapid.entity.ts",
+        "../src/database/entity/user.entity.ts",
         "../src/rapid/rapid.service.ts"
       ],
       "../src/rapid/rapid.service.ts": [

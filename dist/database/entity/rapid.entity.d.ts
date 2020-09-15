@@ -7,7 +7,6 @@ export declare class Rapid extends Base {
     target: number;
     status: 'incomplete' | 'complete';
     owner: User;
-    get days(): number;
     static findByOwner(ownerId: string): Promise<Rapid>;
     static findIncomplete(): Promise<Rapid[]>;
     static updateToNext(ids: string[], endDate: Date): Promise<Rapid[]>;

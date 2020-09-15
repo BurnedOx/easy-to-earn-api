@@ -10,22 +10,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Rapid = void 0;
-const class_transformer_1 = require("class-transformer");
-const moment = require("moment");
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./base.entity");
 const user_entity_1 = require("./user.entity");
 let Rapid = (() => {
     let Rapid = class Rapid extends base_entity_1.Base {
-        get days() {
-            const aDate = moment([this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate()]);
-            const bDate = moment([this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate()]);
-            return aDate.diff(bDate, 'days');
-        }
         static findByOwner(ownerId) {
             return this.createQueryBuilder('rapid')
-                .leftJoin('rapid.owner', 'owner')
+                .leftJoinAndSelect('rapid.owner', 'owner')
                 .where("owner.id = :ownerId", { ownerId })
+                .orderBy("rapid.createdAt", "DESC")
                 .getOne()
                 .then(b => b !== null && b !== void 0 ? b : null);
         }
@@ -76,11 +70,6 @@ let Rapid = (() => {
         typeorm_1.JoinColumn(),
         __metadata("design:type", user_entity_1.User)
     ], Rapid.prototype, "owner", void 0);
-    __decorate([
-        class_transformer_1.Expose(),
-        __metadata("design:type", Object),
-        __metadata("design:paramtypes", [])
-    ], Rapid.prototype, "days", null);
     Rapid = __decorate([
         typeorm_1.Entity()
     ], Rapid);
