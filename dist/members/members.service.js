@@ -59,15 +59,10 @@ let MembersService = (() => {
             return user;
         }
         async getAutopool(user) {
-            if (user.activatedAt === null) {
-                throw new common_1.HttpException('Inactive User', common_1.HttpStatus.BAD_REQUEST);
+            if (user.autopooledAt === null) {
+                throw new common_1.HttpException('User is not autopooled yet', common_1.HttpStatus.BAD_REQUEST);
             }
-            const allMembers = await this.userRepo.find({
-                where: { activatedAt: typeorm_2.Not(typeorm_2.IsNull()), sponsored: typeorm_2.MoreThanOrEqual(3) },
-                order: { createdAt: 'DESC' },
-                relations: ['sponsored']
-            });
-            return allMembers.filter(m => m.activatedAt.getTime() > user.activatedAt.getTime());
+            return user_entity_1.User.getAutopool(user);
         }
     };
     MembersService = __decorate([

@@ -14,6 +14,7 @@ export declare class User extends Base {
     status: 'active' | 'inactive';
     activatedAt: Date | null;
     totalAutopool: number;
+    autopooledAt: Date | null;
     bankDetails: BankDetails | null;
     panNumber: string | null;
     balance: number;
@@ -26,7 +27,6 @@ export declare class User extends Base {
     ranks: Rank[];
     withdrawals: Withdrawal[];
     trx: Transaction[];
-    get isAutopooled(): boolean;
     hashPassword(): Promise<void>;
     static findById(id: string): import("rxjs").Observable<User>;
     static findDirectForRapid(sponsorId: string, startDate: Date, endDate: Date): Promise<[User[], number]>;
@@ -37,6 +37,7 @@ export declare class User extends Base {
         member: User;
         level: number;
     }[]>;
+    static getAutopool(user: User): Promise<User[]>;
     static creditBalance(id: string, amount: number): Promise<User>;
     static debitBalance(id: string, amount: number): Promise<User>;
     toResponseObject(token?: string): UserRO;

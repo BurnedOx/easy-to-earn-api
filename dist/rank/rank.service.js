@@ -37,7 +37,7 @@ let RankService = (() => {
         async generateRanks(userId) {
             try {
                 const allUsers = await this.userRepo.find({
-                    where: { activatedAt: typeorm_2.Not(typeorm_2.IsNull()), id: typeorm_2.Not(userId) },
+                    where: { autopooledAt: typeorm_2.Not(typeorm_2.IsNull()), id: typeorm_2.Not(userId) },
                     relations: ['ranks'],
                 });
                 await typeorm_2.getManager().transaction(async (trx) => {
@@ -81,7 +81,7 @@ let RankService = (() => {
             await typeorm_2.getManager().transaction(async (trx) => {
                 for (let userId of userIds) {
                     const user = await this.userRepo.findOne(userId, {
-                        where: { activatedAt: typeorm_2.Not(typeorm_2.IsNull()) },
+                        where: { autopooledAt: typeorm_2.Not(typeorm_2.IsNull()) },
                         relations: ['ranks']
                     });
                     const existingRankNames = user.ranks.map(r => r.rank);

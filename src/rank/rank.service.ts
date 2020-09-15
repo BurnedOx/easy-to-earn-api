@@ -31,7 +31,7 @@ export class RankService {
     async generateRanks(userId: string) {
         try {
             const allUsers = await this.userRepo.find({
-                where: { activatedAt: Not(IsNull()), id: Not(userId) },
+                where: { autopooledAt: Not(IsNull()), id: Not(userId) },
                 relations: ['ranks'],
             });
             await getManager().transaction(async trx => {
@@ -76,7 +76,7 @@ export class RankService {
         await getManager().transaction(async trx => {
             for (let userId of userIds) {
                 const user = await this.userRepo.findOne(userId, {
-                    where: { activatedAt: Not(IsNull()) },
+                    where: { autopooledAt: Not(IsNull()) },
                     relations: ['ranks']
                 });
                 const existingRankNames = user.ranks.map(r => r.rank);

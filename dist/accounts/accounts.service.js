@@ -69,11 +69,11 @@ let AccountsService = (() => {
             });
             await this.userRepo.save(user);
             const token = await this.generateJWT(user.id);
-            this.aws.sendSMS(`Wellcome to My-Lifeline-Wallet\n
+            this.aws.sendSMS(`Wellcome to Easy2Earn\n
             You have successfully registered\n
             Your User Id: ${user.id}\n
             Your Password: ${password}\n
-            Please visit: http://my-lifeline-wallet.s3-website.us-east-2.amazonaws.com/`, `${mobile}`, 'mlwallet');
+            Please visit: http://easy2earn.s3-website.us-east-2.amazonaws.com/`, `${mobile}`, 'e2earn');
             return user.toResponseObject(token);
         }
         async getDetails(userId) {
@@ -145,9 +145,16 @@ let AccountsService = (() => {
                 await trx.save(user);
                 await this.incomeService.generateIncomes(user, trx);
                 await this.rapidService.newChallenge(user, trx);
+                const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });
+                const actives = sponsor.sponsored.filter(u => u.activatedAt !== null);
+                if (actives.length === 2) {
+                    sponsor.autopooledAt = new Date();
+                    await trx.save(sponsor);
+                }
             });
             const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });
-            if (sponsor.sponsored.length === 3) {
+            const actives = sponsor.sponsored.filter(u => u.activatedAt !== null);
+            if (actives.length === 3) {
                 this.rankService.generateRanks(sponsor.id);
             }
             return user.toResponseObject();

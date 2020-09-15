@@ -46,7 +46,7 @@ export class IncomeService {
         let sponsor: User = await this.userRepo.findOne(from.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks', 'sponsored'] });
         while (level <= 10 && sponsor.role === 'user') {
             let amount: number;
-            if (!sponsor.isAutopooled && level === 1) {
+            if (sponsor.autopooledAt === null && level === 1) {
                 amount = levelIncomeAmount[level] - 100;
             } else {
                 amount = levelIncomeAmount[level];

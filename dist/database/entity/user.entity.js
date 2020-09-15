@@ -20,14 +20,10 @@ const withdrawal_entity_1 = require("./withdrawal.entity");
 const transaction_entity_1 = require("./transaction.entity");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
-const class_transformer_1 = require("class-transformer");
 const rapid_entity_1 = require("./rapid.entity");
 let User = (() => {
     var User_1;
     let User = User_1 = class User extends base_entity_1.Base {
-        get isAutopooled() {
-            return this.sponsored.length >= 3;
-        }
         async hashPassword() {
             this.password = await bcrypct.hash(this.password, 10);
         }
@@ -38,7 +34,7 @@ let User = (() => {
             return this.createQueryBuilder('user')
                 .leftJoinAndSelect('user.sponsoredBy', 'sponsoredBy')
                 .where("sponsoredBy.id = :sponsorId", { sponsorId })
-                .andWhere("DATE_FORMAT(user.activatedAt, '%Y-%m-%d') BETWEEN CAST(:startDate as date) AND CAST(:endDate as date)", { startDate, endDate })
+                .andWhere("user.activatedAt BETWEEN :startDate AND :endDate", { startDate, endDate })
                 .getManyAndCount();
         }
         static async getDownline(root, downline = [], level = 1) {
@@ -51,6 +47,13 @@ let User = (() => {
                 await this.getDownline(member, downline, level + 1);
             }
             return downline;
+        }
+        static getAutopool(user) {
+            return this.createQueryBuilder('user')
+                .where('user.activatedAt IS NOT NULL')
+                .andWhere('user.autopooledAt IS NOT NULL')
+                .andWhere("user.autopooledAt > :aDate", { aDate: user.autopooledAt })
+                .getMany();
         }
         static async creditBalance(id, amount) {
             const user = await this.findOne(id);
@@ -86,8 +89,8 @@ let User = (() => {
             return { id, name, level, status, createdAt, activatedAt };
         }
         toAutopoolMemberObject() {
-            const { id, activatedAt } = this;
-            return { id, activatedAt };
+            const { id, name, autopooledAt } = this;
+            return { id, name, autopooledAt };
         }
         async comparePassword(attempt) {
             return await bcrypct.compare(attempt, this.password);
@@ -121,6 +124,10 @@ let User = (() => {
         typeorm_1.Column({ default: 0 }),
         __metadata("design:type", Number)
     ], User.prototype, "totalAutopool", void 0);
+    __decorate([
+        typeorm_1.Column({ nullable: true, default: null }),
+        __metadata("design:type", Date)
+    ], User.prototype, "autopooledAt", void 0);
     __decorate([
         typeorm_1.Column({ type: 'jsonb', nullable: true, default: null }),
         __metadata("design:type", Object)
@@ -171,11 +178,6 @@ let User = (() => {
         typeorm_1.OneToMany(() => transaction_entity_1.Transaction, trx => trx.owner),
         __metadata("design:type", Array)
     ], User.prototype, "trx", void 0);
-    __decorate([
-        class_transformer_1.Expose(),
-        __metadata("design:type", Object),
-        __metadata("design:paramtypes", [])
-    ], User.prototype, "isAutopooled", null);
     __decorate([
         typeorm_1.BeforeInsert(),
         __metadata("design:type", Function),

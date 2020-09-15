@@ -53,7 +53,7 @@ let IncomeService = (() => {
             let sponsor = await this.userRepo.findOne(from.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks', 'sponsored'] });
             while (level <= 10 && sponsor.role === 'user') {
                 let amount;
-                if (!sponsor.isAutopooled && level === 1) {
+                if (sponsor.autopooledAt === null && level === 1) {
                     amount = costraints_1.levelIncomeAmount[level] - 100;
                 }
                 else {

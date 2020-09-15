@@ -46,7 +46,8 @@ export interface MemberRO {
 
 export interface AutopoolMemberRO {
     id: string;
-    activatedAt: Date | null;
+    name: string;
+    autopooledAt: Date | null;
 }
 
 export interface EpinRO {

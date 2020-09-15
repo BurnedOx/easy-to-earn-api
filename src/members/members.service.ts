@@ -53,16 +53,10 @@ export class MembersService {
     }
 
     private async getAutopool(user: User) {
-        if (user.activatedAt === null) {
-            throw new HttpException('Inactive User', HttpStatus.BAD_REQUEST);
+        if (user.autopooledAt === null) {
+            throw new HttpException('User is not autopooled yet', HttpStatus.BAD_REQUEST);
         }
 
-        const allMembers = await this.userRepo.find({
-            where: { activatedAt: Not(IsNull()), sponsored: MoreThanOrEqual(3) },
-            order: { createdAt: 'DESC' },
-            relations: ['sponsored']
-        });
-
-        return allMembers.filter(m => m.activatedAt.getTime() > user.activatedAt.getTime());
+        return User.getAutopool(user);
     }
 }

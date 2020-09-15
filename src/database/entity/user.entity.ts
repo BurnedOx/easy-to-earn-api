@@ -11,6 +11,7 @@ import { from } from "rxjs";
 import { map } from "rxjs/operators";
 import { Expose } from "class-transformer";
 import { Rapid } from "./rapid.entity";
+import { userInfo } from "os";
 
 @Entity()
 export class User extends Base {
@@ -34,6 +35,9 @@ export class User extends Base {
 
     @Column({ default: 0 })
     totalAutopool: number;
+
+    @Column({ nullable: true, default: null })
+    autopooledAt: Date | null;
 
     @Column({ type: 'jsonb', nullable: true, default: null })
     bankDetails: BankDetails | null;
@@ -73,11 +77,6 @@ export class User extends Base {
     @OneToMany(() => Transaction, trx => trx.owner)
     trx: Transaction[];
 
-    @Expose()
-    get isAutopooled() {
-        return this.sponsored.length >= 3;
-    }
-
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypct.hash(this.password, 10);
@@ -96,8 +95,7 @@ export class User extends Base {
         return this.createQueryBuilder('user')
             .leftJoinAndSelect('user.sponsoredBy', 'sponsoredBy')
             .where("sponsoredBy.id = :sponsorId", { sponsorId })
-            .andWhere("DATE_FORMAT(user.activatedAt, '%Y-%m-%d') BETWEEN CAST(:startDate as date) AND CAST(:endDate as date)",
-                { startDate, endDate })
+            .andWhere("user.activatedAt BETWEEN :startDate AND :endDate", { startDate, endDate })
             .getManyAndCount();
     }
 
@@ -116,6 +114,14 @@ export class User extends Base {
             await this.getDownline(member, downline, level + 1);
         }
         return downline;
+    }
+
+    public static getAutopool(user: User) {
+        return this.createQueryBuilder('user')
+            .where('user.activatedAt IS NOT NULL')
+            .andWhere('user.autopooledAt IS NOT NULL')
+            .andWhere("user.autopooledAt > :aDate", { aDate: user.autopooledAt })
+            .getMany();
     }
 
     public static async creditBalance(id: string, amount: number) {
@@ -155,8 +161,8 @@ export class User extends Base {
     }
 
     toAutopoolMemberObject(): AutopoolMemberRO {
-        const { id, activatedAt } = this;
-        return { id, activatedAt };
+        const { id, name, autopooledAt } = this;
+        return { id, name, autopooledAt };
     }
 
     async comparePassword(attempt: string) {
