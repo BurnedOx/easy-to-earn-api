@@ -21,13 +21,14 @@ const jwt_guard_1 = require("../common/guards/jwt.guard");
 const jwt_strategy_1 = require("../common/guards/jwt.strategy");
 const aws_1 = require("../common/aws/aws");
 const rapid_module_1 = require("../rapid/rapid.module");
+const transaction_entity_1 = require("../database/entity/transaction.entity");
 let AccountsModule = (() => {
     let AccountsModule = class AccountsModule {
     };
     AccountsModule = __decorate([
         common_1.Module({
             imports: [
-                typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, epin_entity_1.EPin]),
+                typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, epin_entity_1.EPin, transaction_entity_1.Transaction]),
                 rank_module_1.RankModule,
                 income_module_1.IncomeModule,
                 rapid_module_1.RapidModule,

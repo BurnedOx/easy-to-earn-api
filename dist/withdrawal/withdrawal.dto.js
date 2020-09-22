@@ -16,8 +16,8 @@ let WithdrawalDTO = (() => {
     }
     __decorate([
         class_validator_1.IsNumber(),
-        class_validator_1.Min(300),
-        class_validator_1.IsDivisibleBy(300),
+        class_validator_1.Min(200),
+        class_validator_1.IsDivisibleBy(200),
         __metadata("design:type", Number)
     ], WithdrawalDTO.prototype, "withdrawAmount", void 0);
     return WithdrawalDTO;

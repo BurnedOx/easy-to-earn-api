@@ -14,6 +14,7 @@ import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AWSHandler } from 'src/common/aws/aws';
 import { RapidService } from 'src/rapid/rapid.service';
+import { Transaction } from 'src/database/entity/transaction.entity';
 
 @Injectable()
 export class AccountsService {
@@ -23,6 +24,9 @@ export class AccountsService {
 
         @InjectRepository(EPin)
         private readonly epinRepo: Repository<EPin>,
+
+        @InjectRepository(Transaction)
+        private readonly trxRepo: Repository<Transaction>,
 
         private readonly incomeService: IncomeService,
 
@@ -259,6 +263,34 @@ export class AccountsService {
                 await trx.save(user);
             }
         });
+        return 'ok';
+    }
+
+    async creditBalance(userId: string, amount: number) {
+        const user = await this.userRepo.findOne(userId);
+        user.balance = user.balance + amount;
+        await user.save();
+        return 'ok';
+    }
+
+    async debitBalance(userId: string, amount: number) {
+        const user = await this.userRepo.findOne(userId);
+        if (user.balance < amount) {
+            throw new HttpException('Insufficient balance', HttpStatus.BAD_REQUEST);
+        }
+        getManager().transaction(async (trx) => {
+            user.balance = user.balance - amount;
+            await trx.save(user);
+            const transaction = this.trxRepo.create({
+                amount,
+                currentBalance: user.balance,
+                type: 'debit',
+                remarks: 'Debited by Admin',
+                owner: user
+            });
+            await trx.save(transaction);
+        });
+
         return 'ok';
     }
 

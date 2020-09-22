@@ -3712,8 +3712,8 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.dto.ts": {
-        "version": "d277a93f291bb50cbd2feba8d88dd5fdb5f857b33655c105da7c78cd97891056",
-        "signature": "11c977c759cf6d5b063a129d8884e1c222a124fb90c977df86a88212564dc793",
+        "version": "238fd5384e599025d829cbf26302d9d08f4b01b21c4ae4ce9578ec9f3f3501ba",
+        "signature": "25091917fa9a5b0dd387ebe19b2b602c142b83548e8f9735a6a35d9c2b1f107c",
         "affectsGlobalScope": false
       },
       "../src/common/costraints.ts": {
@@ -3732,7 +3732,7 @@
         "affectsGlobalScope": false
       },
       "../src/income/income.service.ts": {
-        "version": "0317ccc4ff90648128eb7ee00b848379a3f6999b2cd2aebaaccda1aa06bf84f0",
+        "version": "1229bc4a4970985d508bbd1486ef41c00a14c325505d37d966e2de94bbbeab2a",
         "signature": "10fec9a4eb52cd59a6054bb4a2da9c81838535c0e0c6f91f813d6ea8e555816e",
         "affectsGlobalScope": false
       },
@@ -5382,8 +5382,8 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.service.ts": {
-        "version": "cb44abe08455569f9cb414f457bf633b6e68dcbcfc5262952f43f2cbf795f788",
-        "signature": "adb2164415c1f5a1b4064570bc53c89228a7698853e1e568812372af3a60e911",
+        "version": "710234401dd08f471bd9586886e4631784fa089594337fa7a3a538e0caca2310",
+        "signature": "b391cbfdcbbd6b771608e3bb6b3a36174d5fcdc0dd7cf3819bbcf1d226d6c7df",
         "affectsGlobalScope": false
       },
       "../src/common/validation.pipe.ts": {
@@ -5697,8 +5697,8 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.controller.ts": {
-        "version": "7a5f0833877be730023bb19c404107b6d67df7a8081f32d2ae511034d93ee7d4",
-        "signature": "6c7e8952a1758e58ffe9ee67fd76980103c745df29c8bf0e8a9b4e70b1a86632",
+        "version": "c7add8c3df98e966756e997bf151b98c7704de93525692513119501dba542cd7",
+        "signature": "e1839384435713dd4255aec75a52c9bd0015333b0053518e60ed5d1a2b7aa50f",
         "affectsGlobalScope": false
       },
       "../src/rank/rank.controller.ts": {
@@ -5817,7 +5817,7 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.module.ts": {
-        "version": "2b3bddd4c07178ba913f967a479b1be1d289a1a282233041bab26f270c3f8274",
+        "version": "27837abb81d6971b79ff6f4b269f2d34b6a5b05fad647db700ebf51e5bc454b5",
         "signature": "ea58d875d88ad3fbdddd073ad89b3e13456607bc13ffb3df2db8dbaca87a35d5",
         "affectsGlobalScope": false
       },
@@ -5867,7 +5867,7 @@
         "affectsGlobalScope": false
       },
       "../src/withdrawal/withdrawal.dto.ts": {
-        "version": "388d8a1cbc2327d632b62eaab3226d0620c6dd66afb43682714901c070b04a88",
+        "version": "fdc2877e3b3b50c0ad3cf7848e092e0372ea5bfb9782c940cc402d0cdf17517d",
         "signature": "70a4a2fa3dfc490586ec023f7731dbd1bab4e199ceb1b45cae6bf3141ba01c2f",
         "affectsGlobalScope": false
       },
@@ -5919,6 +5919,11 @@
       "../src/main.ts": {
         "version": "577e3a5753e0b418d59f8aa1b0e5fb4d0bfb667237f04d16df6d90f6245e65c7",
         "signature": "5c9cd8ba4f81982e8002c709ba0f6675b7aaf1def7f8a98a9996040a3e1c2bc0",
+        "affectsGlobalScope": false
+      },
+      "../src/database/entity/userepin.entity.ts": {
+        "version": "8997c0637451873ec0d7e932cb83ddf19ccb295bd7630424060988cab7cf4d58",
+        "signature": "709ef092c2108e4667332721cf81581e252016052e151df46a82e0049b60fef2",
         "affectsGlobalScope": false
       },
       "../node_modules/@types/anymatch/index.d.ts": {
@@ -17914,6 +17919,7 @@
         "../src/common/guards/jwt.guard.ts",
         "../src/common/guards/jwt.strategy.ts",
         "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/user.entity.ts",
         "../src/income/income.module.ts",
         "../src/rank/rank.module.ts",
@@ -17936,6 +17942,7 @@
         "../src/common/aws/aws.ts",
         "../src/common/costraints.ts",
         "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/user.entity.ts",
         "../src/income/income.service.ts",
         "../src/interfaces.d.ts",
@@ -18198,6 +18205,16 @@
         "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/withdrawal.entity.ts",
         "../src/interfaces.d.ts"
+      ],
+      "../src/database/entity/userepin.entity.ts": [
+        "../node_modules/@types/graceful-fs/index.d.ts",
+        "../node_modules/@types/node/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/fs.d.ts",
+        "../node_modules/@types/node/ts3.2/util.d.ts",
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/typeorm/index.d.ts",
+        "../src/database/entity/base.entity.ts",
+        "../src/database/entity/user.entity.ts"
       ],
       "../src/database/entity/withdrawal.entity.ts": [
         "../node_modules/@types/graceful-fs/index.d.ts",
@@ -30286,6 +30303,7 @@
         "../src/accounts/accounts.dto.ts",
         "../src/common/aws/aws.ts",
         "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/user.entity.ts",
         "../src/income/income.service.ts",
         "../src/interfaces.d.ts",
@@ -30360,6 +30378,9 @@
         "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/withdrawal.entity.ts",
         "../src/interfaces.d.ts"
+      ],
+      "../src/database/entity/userepin.entity.ts": [
+        "../src/database/entity/base.entity.ts"
       ],
       "../src/database/entity/withdrawal.entity.ts": [
         "../src/database/entity/base.entity.ts",

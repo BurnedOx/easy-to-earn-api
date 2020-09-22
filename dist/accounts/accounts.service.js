@@ -27,11 +27,13 @@ const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const aws_1 = require("../common/aws/aws");
 const rapid_service_1 = require("../rapid/rapid.service");
+const transaction_entity_1 = require("../database/entity/transaction.entity");
 let AccountsService = (() => {
     let AccountsService = class AccountsService {
-        constructor(userRepo, epinRepo, incomeService, rankService, rapidService, jwtService, aws) {
+        constructor(userRepo, epinRepo, trxRepo, incomeService, rankService, rapidService, jwtService, aws) {
             this.userRepo = userRepo;
             this.epinRepo = epinRepo;
+            this.trxRepo = trxRepo;
             this.incomeService = incomeService;
             this.rankService = rankService;
             this.rapidService = rapidService;
@@ -223,6 +225,31 @@ let AccountsService = (() => {
             });
             return 'ok';
         }
+        async creditBalance(userId, amount) {
+            const user = await this.userRepo.findOne(userId);
+            user.balance = user.balance + amount;
+            await user.save();
+            return 'ok';
+        }
+        async debitBalance(userId, amount) {
+            const user = await this.userRepo.findOne(userId);
+            if (user.balance < amount) {
+                throw new common_1.HttpException('Insufficient balance', common_1.HttpStatus.BAD_REQUEST);
+            }
+            typeorm_2.getManager().transaction(async (trx) => {
+                user.balance = user.balance - amount;
+                await trx.save(user);
+                const transaction = this.trxRepo.create({
+                    amount,
+                    currentBalance: user.balance,
+                    type: 'debit',
+                    remarks: 'Debited by Admin',
+                    owner: user
+                });
+                await trx.save(transaction);
+            });
+            return 'ok';
+        }
         async deleteUser(id) {
             await this.userRepo.delete(id);
             return 'ok';
@@ -235,7 +262,9 @@ let AccountsService = (() => {
         common_1.Injectable(),
         __param(0, typeorm_1.InjectRepository(user_entity_1.User)),
         __param(1, typeorm_1.InjectRepository(epin_entity_1.EPin)),
+        __param(2, typeorm_1.InjectRepository(transaction_entity_1.Transaction)),
         __metadata("design:paramtypes", [typeorm_2.Repository,
+            typeorm_2.Repository,
             typeorm_2.Repository,
             income_service_1.IncomeService,
             rank_service_1.RankService,

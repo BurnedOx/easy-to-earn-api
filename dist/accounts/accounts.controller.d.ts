@@ -1,5 +1,5 @@
 import { AccountsService } from './accounts.service';
-import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO } from './accounts.dto';
+import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO, WalletDTO } from './accounts.dto';
 import { HeaderDTO } from 'src/common/dto/base-header.dto';
 export declare class AccountsController {
     private readonly accountsService;
@@ -21,5 +21,7 @@ export declare class AccountsController {
     updateBankDetailsByAdmin(id: string, data: BankDTO): Promise<string>;
     updateSponsor(sponsorId: string, id: string): Promise<import("../interfaces").UserRO>;
     resetWallets(): Promise<string>;
+    creditUser(data: WalletDTO): Promise<string>;
+    debitUser(data: WalletDTO): Promise<string>;
     deleteUser(id: string): Promise<string>;
 }

@@ -2,7 +2,7 @@ import { IsNumber, Min, Max, IsDivisibleBy } from "class-validator";
 
 export class WithdrawalDTO {
     @IsNumber()
-    @Min(300)
-    @IsDivisibleBy(300)
+    @Min(200)
+    @IsDivisibleBy(200)
     withdrawAmount: number;
 }

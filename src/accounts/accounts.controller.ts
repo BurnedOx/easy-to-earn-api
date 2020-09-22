@@ -1,7 +1,7 @@
 import { Controller, Post, UsePipes, Get, Body, UseGuards, Put, Delete, Param } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { ValidationPipe } from '../common/validation.pipe';
-import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO } from './accounts.dto';
+import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO, WalletDTO } from './accounts.dto';
 import { JwtAuthGuard } from '../common/guards/jwt.guard';
 import { HeaderDTO } from 'src/common/dto/base-header.dto';
 import { CustomHeader } from 'src/common/decorators/common-header-decorator';
@@ -130,6 +130,20 @@ export class AccountsController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     resetWallets() {
         return this.accountsService.resetBalance();
+    }
+
+    @Put('credit-wallet')
+    @hasRoles('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    creditUser(@Body() data: WalletDTO) {
+        return this.accountsService.creditBalance(data.userId, data.amount);
+    }
+
+    @Put('debit-wallet')
+    @hasRoles('admin')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    debitUser(@Body() data: WalletDTO) {
+        return this.accountsService.debitBalance(data.userId, data.amount);
     }
 
     @Delete(':id')

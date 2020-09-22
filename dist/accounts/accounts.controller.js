@@ -78,6 +78,12 @@ let AccountsController = (() => {
         resetWallets() {
             return this.accountsService.resetBalance();
         }
+        creditUser(data) {
+            return this.accountsService.creditBalance(data.userId, data.amount);
+        }
+        debitUser(data) {
+            return this.accountsService.debitBalance(data.userId, data.amount);
+        }
         deleteUser(id) {
             return this.accountsService.deleteUser(id);
         }
@@ -232,6 +238,24 @@ let AccountsController = (() => {
         __metadata("design:paramtypes", []),
         __metadata("design:returntype", void 0)
     ], AccountsController.prototype, "resetWallets", null);
+    __decorate([
+        common_1.Put('credit-wallet'),
+        roles_decorator_1.hasRoles('admin'),
+        common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+        __param(0, common_1.Body()),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [accounts_dto_1.WalletDTO]),
+        __metadata("design:returntype", void 0)
+    ], AccountsController.prototype, "creditUser", null);
+    __decorate([
+        common_1.Put('debit-wallet'),
+        roles_decorator_1.hasRoles('admin'),
+        common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+        __param(0, common_1.Body()),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [accounts_dto_1.WalletDTO]),
+        __metadata("design:returntype", void 0)
+    ], AccountsController.prototype, "debitUser", null);
     __decorate([
         common_1.Delete(':id'),
         roles_decorator_1.hasRoles('admin'),

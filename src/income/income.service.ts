@@ -51,8 +51,12 @@ export class IncomeService {
             } else {
                 amount = levelIncomeAmount[level];
             }
+            // if (level === 1)
+            //     console.log('amount to be added: ' + amount, 'current balance: ' + sponsor.balance)
             sponsor.balance = sponsor.balance + amount;
             await trx.save(sponsor);
+            // if (level === 1)
+            //     console.log('updated balance: ' + sponsor.balance);
             const income = this.incomeRepo.create({
                 owner: sponsor,
                 currentBalance: sponsor.balance,

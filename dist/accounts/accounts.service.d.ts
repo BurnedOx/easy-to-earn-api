@@ -9,15 +9,17 @@ import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AWSHandler } from 'src/common/aws/aws';
 import { RapidService } from 'src/rapid/rapid.service';
+import { Transaction } from 'src/database/entity/transaction.entity';
 export declare class AccountsService {
     private readonly userRepo;
     private readonly epinRepo;
+    private readonly trxRepo;
     private readonly incomeService;
     private readonly rankService;
     private readonly rapidService;
     private readonly jwtService;
     private readonly aws;
-    constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, incomeService: IncomeService, rankService: RankService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
+    constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, trxRepo: Repository<Transaction>, incomeService: IncomeService, rankService: RankService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
     findOne(id: string): Observable<UserRO>;
     getAll(): Promise<UserRO[]>;
     login(data: LoginDTO, admin?: boolean): Promise<UserRO>;
@@ -31,6 +33,8 @@ export declare class AccountsService {
     updateBankDetails(data: BankDTO, userId: string): Promise<string>;
     updateSponsor(userId: string, sponsorId: string): Promise<UserRO>;
     resetBalance(): Promise<string>;
+    creditBalance(userId: string, amount: number): Promise<string>;
+    debitBalance(userId: string, amount: number): Promise<string>;
     deleteUser(id: string): Promise<string>;
     private generateJWT;
 }

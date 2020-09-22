@@ -30,3 +30,7 @@ export declare class BankDTO implements BankDetails {
     isfc: string;
     accountType: string;
 }
+export declare class WalletDTO {
+    userId: string;
+    amount: number;
+}

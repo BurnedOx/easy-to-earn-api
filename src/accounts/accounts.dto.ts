@@ -81,3 +81,11 @@ export class BankDTO implements BankDetails {
     @IsString()
     accountType: string;
 }
+
+export class WalletDTO {
+    @IsString()
+    userId: string;
+
+    @IsNumber()
+    amount: number;
+}
