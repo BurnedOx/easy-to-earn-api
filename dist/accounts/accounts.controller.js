@@ -33,6 +33,9 @@ let AccountsController = (() => {
         getUser(id) {
             return this.accountsService.findOne(id);
         }
+        getName(id) {
+            return this.accountsService.getName(id);
+        }
         registerAdmin(data) {
             return this.accountsService.registerAdmin(data);
         }
@@ -104,6 +107,14 @@ let AccountsController = (() => {
         __metadata("design:paramtypes", [String]),
         __metadata("design:returntype", void 0)
     ], AccountsController.prototype, "getUser", null);
+    __decorate([
+        common_1.Get('name/:id'),
+        common_1.UsePipes(new validation_pipe_1.ValidationPipe()),
+        __param(0, common_1.Param('id')),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [String]),
+        __metadata("design:returntype", void 0)
+    ], AccountsController.prototype, "getName", null);
     __decorate([
         common_1.Post('admin/register'),
         common_1.UsePipes(new validation_pipe_1.ValidationPipe()),

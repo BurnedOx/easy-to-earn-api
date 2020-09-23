@@ -43,6 +43,9 @@ let AccountsService = (() => {
         findOne(id) {
             return rxjs_1.from(this.userRepo.findOne(id, { relations: ['sponsoredBy', 'epin', 'ranks'] })).pipe(operators_1.map((user) => user === null || user === void 0 ? void 0 : user.toResponseObject()));
         }
+        getName(id) {
+            return this.findOne(id).pipe(operators_1.map(user => { var _a; return (_a = user === null || user === void 0 ? void 0 : user.name) !== null && _a !== void 0 ? _a : 'not found'; }));
+        }
         async getAll() {
             const users = await this.userRepo.find({ relations: ['sponsoredBy', 'epin', 'ranks'] });
             return users.map(user => user.toResponseObject());

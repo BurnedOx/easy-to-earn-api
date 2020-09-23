@@ -45,6 +45,10 @@ export class AccountsService {
         )
     }
 
+    getName(id: string): Observable<string> {
+        return this.findOne(id).pipe(map(user => user?.name ?? 'not found'));
+    }
+
     async getAll() {
         const users = await this.userRepo.find({ relations: ['sponsoredBy', 'epin', 'ranks'] });
         return users.map(user => user.toResponseObject());

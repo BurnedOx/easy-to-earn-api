@@ -5382,8 +5382,8 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.service.ts": {
-        "version": "710234401dd08f471bd9586886e4631784fa089594337fa7a3a538e0caca2310",
-        "signature": "b391cbfdcbbd6b771608e3bb6b3a36174d5fcdc0dd7cf3819bbcf1d226d6c7df",
+        "version": "b203586bf8aa8935b684c89fa34585a35c13b95eaf722d4784f6eb260209dd25",
+        "signature": "d47b42bf7e0045665271e49ed94ba86f645bcdfeb7b94b436fae0058efcab3d9",
         "affectsGlobalScope": false
       },
       "../src/common/validation.pipe.ts": {
@@ -5697,8 +5697,8 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.controller.ts": {
-        "version": "c7add8c3df98e966756e997bf151b98c7704de93525692513119501dba542cd7",
-        "signature": "e1839384435713dd4255aec75a52c9bd0015333b0053518e60ed5d1a2b7aa50f",
+        "version": "6d0d2844923a5779695638133aaed2c8295607451dab8ebdb1abef9329dea6a3",
+        "signature": "3cfa6738870d34312bdf4cd4fcc77b85f4fe07c1dbba44a3c1031e8ec9de6187",
         "affectsGlobalScope": false
       },
       "../src/rank/rank.controller.ts": {

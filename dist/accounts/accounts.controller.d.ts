@@ -6,6 +6,7 @@ export declare class AccountsController {
     constructor(accountsService: AccountsService);
     getAllUsers(): Promise<import("../interfaces").UserRO[]>;
     getUser(id: string): import("rxjs").Observable<import("../interfaces").UserRO>;
+    getName(id: string): import("rxjs").Observable<string>;
     registerAdmin(data: AdminRegistrationDTO): Promise<import("../interfaces").UserRO>;
     loginAdmin(data: LoginDTO): Promise<import("../interfaces").UserRO>;
     register(data: RegistrationDTO): Promise<import("../interfaces").UserRO>;

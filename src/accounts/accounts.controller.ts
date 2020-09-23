@@ -27,6 +27,12 @@ export class AccountsController {
         return this.accountsService.findOne(id);
     }
 
+    @Get('name/:id')
+    @UsePipes(new ValidationPipe())
+    getName(@Param('id') id: string) {
+        return this.accountsService.getName(id);
+    }
+
     @Post('admin/register')
     @UsePipes(new ValidationPipe())
     registerAdmin(@Body() data: AdminRegistrationDTO) {

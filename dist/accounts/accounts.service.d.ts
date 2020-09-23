@@ -21,6 +21,7 @@ export declare class AccountsService {
     private readonly aws;
     constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, trxRepo: Repository<Transaction>, incomeService: IncomeService, rankService: RankService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
     findOne(id: string): Observable<UserRO>;
+    getName(id: string): Observable<string>;
     getAll(): Promise<UserRO[]>;
     login(data: LoginDTO, admin?: boolean): Promise<UserRO>;
     register(data: RegistrationDTO): Promise<UserRO>;
