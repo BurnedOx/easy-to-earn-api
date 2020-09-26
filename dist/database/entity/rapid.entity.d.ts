@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm";
 import { Base } from "./base.entity";
 import { User } from "./user.entity";
 export declare class Rapid extends Base {
@@ -9,6 +10,6 @@ export declare class Rapid extends Base {
     owner: User;
     static findByOwner(ownerId: string): Promise<Rapid>;
     static findIncomplete(): Promise<Rapid[]>;
-    static updateToNext(ids: string[], endDate: Date): Promise<Rapid[]>;
-    static completeChallenges(ids: string[]): Promise<Rapid[]>;
+    static updateToNext(ids: string[], endDate: Date, trx?: EntityManager): Promise<Rapid[]>;
+    static completeChallenges(ids: string[], trx?: EntityManager): Promise<Rapid[]>;
 }

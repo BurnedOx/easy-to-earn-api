@@ -16,7 +16,7 @@ export declare class RapidService {
         updatedAt: Date;
     }>;
     newChallenge(owner: User, trx?: EntityManager): Promise<Rapid>;
-    checkForCompletion(): Promise<void>;
+    checkForCompletion(): void;
     private getCompleted;
     private handleCompletion;
     private handleConvertTo30;

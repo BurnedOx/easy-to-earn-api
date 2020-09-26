@@ -3087,13 +3087,13 @@
         "affectsGlobalScope": false
       },
       "../src/database/entity/rapid.entity.ts": {
-        "version": "26f60ae41368fc7920a1c4f173a8553a8c1cc031e1912a36cd537cf4df4c8bee",
-        "signature": "7989425e695e6f089b1e845adacfc1eac1bb816b9cf6f44a7a3f6f29b083ffbe",
+        "version": "44ade513d711026e2f1d7eb4d56e0243d346b18afd43ec0104122ccaccdd0275",
+        "signature": "6152578b6ef764f0380d6332fb7ea028f61d89b92c16c0c01cad5debac02d877",
         "affectsGlobalScope": false
       },
       "../src/database/entity/user.entity.ts": {
-        "version": "85d277b2527e1cf98c511306556d30eb7b39a945292968bd4ba46f0db96e9590",
-        "signature": "2509561b6392630413de61d3f06153a830a0c16a75cf40cfec4fe591b5134090",
+        "version": "b964942dc61b6b30c95049c7c8ce816d0824eb6726eff96eb3bb99919420e7d4",
+        "signature": "1db4d6d9b4c065674950e0d71bcbd51fe209723b046ff6b3b5e102101326694d",
         "affectsGlobalScope": false
       },
       "../node_modules/class-validator/types/validation/validationerror.d.ts": {
@@ -5377,8 +5377,8 @@
         "affectsGlobalScope": false
       },
       "../src/rapid/rapid.service.ts": {
-        "version": "082dd96b468b54059315bc4c1c5b7edf9ac42a09c9881cef7eb541ed15595b16",
-        "signature": "508ff9039ddc75fea59615a7d276314b00362bd9a8064850d29fe8895fe74668",
+        "version": "57da0c09ff13012d4684426f582e134f8e9169e0a07598bbf6e414092e41b58e",
+        "signature": "832d2d9bcd879cd066275a1bd764d94195cb210285512bb71111528ca267ca56",
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.service.ts": {
@@ -30360,6 +30360,7 @@
         "../src/interfaces.d.ts"
       ],
       "../src/database/entity/rapid.entity.ts": [
+        "../node_modules/typeorm/index.d.ts",
         "../src/database/entity/base.entity.ts",
         "../src/database/entity/user.entity.ts"
       ],
@@ -30370,6 +30371,7 @@
       ],
       "../src/database/entity/user.entity.ts": [
         "../node_modules/rxjs/index.d.ts",
+        "../node_modules/typeorm/index.d.ts",
         "../src/database/entity/base.entity.ts",
         "../src/database/entity/epin.entity.ts",
         "../src/database/entity/income.entity.ts",

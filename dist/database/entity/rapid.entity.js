@@ -14,7 +14,8 @@ const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./base.entity");
 const user_entity_1 = require("./user.entity");
 let Rapid = (() => {
-    let Rapid = class Rapid extends base_entity_1.Base {
+    var Rapid_1;
+    let Rapid = Rapid_1 = class Rapid extends base_entity_1.Base {
         static findByOwner(ownerId) {
             return this.createQueryBuilder('rapid')
                 .leftJoinAndSelect('rapid.owner', 'owner')
@@ -26,23 +27,32 @@ let Rapid = (() => {
         static findIncomplete() {
             return this.find({ where: { status: 'incomplete' }, relations: ["owner"] });
         }
-        static async updateToNext(ids, endDate) {
-            const result = await this.update(ids, {
-                amount: 2500,
-                target: 30,
-                endDate
-            });
+        static async updateToNext(ids, endDate, trx) {
+            let result;
+            const options = { amount: 2500, target: 30, endDate };
+            if (trx) {
+                result = await trx.update(this, { id: typeorm_1.In(ids) }, options);
+            }
+            else {
+                result = await this.update(ids, options);
+            }
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the challenge. Entity might be missing. Check " + ids);
             }
-            return this.findByIds(ids);
+            return this.findByIds(ids, { relations: ['owner'] });
         }
-        static async completeChallenges(ids) {
-            const result = await this.update(ids, { status: 'complete' });
+        static async completeChallenges(ids, trx) {
+            let result;
+            if (trx) {
+                result = await trx.update(Rapid_1, { id: typeorm_1.In(ids) }, { status: 'complete' });
+            }
+            else {
+                result = await this.update(ids, { status: 'complete' });
+            }
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the challenge. Entity might be missing. Check " + ids);
             }
-            return this.findByIds(ids);
+            return this.findByIds(ids, { relations: ['owner'] });
         }
     };
     __decorate([
@@ -70,7 +80,7 @@ let Rapid = (() => {
         typeorm_1.JoinColumn(),
         __metadata("design:type", user_entity_1.User)
     ], Rapid.prototype, "owner", void 0);
-    Rapid = __decorate([
+    Rapid = Rapid_1 = __decorate([
         typeorm_1.Entity()
     ], Rapid);
     return Rapid;

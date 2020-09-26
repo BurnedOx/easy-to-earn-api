@@ -1,5 +1,5 @@
 import { Base } from "./base.entity";
-import { Column, Entity, OneToMany, JoinColumn, ManyToOne, BeforeInsert, OneToOne, ManyToMany, JoinTable } from "typeorm";
+import { Column, Entity, OneToMany, JoinColumn, ManyToOne, BeforeInsert, OneToOne, ManyToMany, JoinTable, EntityManager, UpdateResult } from "typeorm";
 import { BankDetails, UserRO, MemberRO, AutopoolMemberRO } from "src/interfaces";
 import * as bcrypct from 'bcryptjs';
 import { EPin } from "./epin.entity";
@@ -124,9 +124,15 @@ export class User extends Base {
             .getMany();
     }
 
-    public static async creditBalance(id: string, amount: number) {
+    public static async creditBalance(id: string, amount: number, trx?: EntityManager) {
+        let result: UpdateResult;
         const user = await this.findOne(id);
-        const result = await this.update(id, { balance: user.balance + amount });
+        const options = { balance: user.balance + amount };
+        if (trx) {
+            result = await trx.update(this, { id }, options)
+        } else {
+            result = await this.update(id, options);
+        }
         if (result.affected && result.affected === 0) {
             throw Error("No changed made to the user. Entity might be missing. Check " + id);
         }

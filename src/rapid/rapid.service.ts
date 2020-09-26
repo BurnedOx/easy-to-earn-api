@@ -30,13 +30,15 @@ export class RapidService {
 
     @Cron('0 0 * * *')
     checkForCompletion() {
-        return getManager().transaction(async trx => {
+        getManager().transaction(async trx => {
+            console.log('Cron Executed');
             const incomplete = await Rapid.findIncomplete();
             const [completed, incomplete7days, incomplete30days] = await this.getCompleted(incomplete);
-            await this.handleCompletion(completed, trx);
-            await this.handleConvertTo30(incomplete7days);
-            await this.handleStartNew(incomplete30days, trx);
-        });
+            console.log(completed, incomplete7days, incomplete30days)
+            await this.handleCompletion(completed, trx).catch(e => console.log('comlpetion error', e));
+            await this.handleConvertTo30(incomplete7days, trx).catch(e => console.log('30days error', e));
+            await this.handleStartNew(incomplete30days, trx).catch(e => console.log('7days error', e));
+        })
     }
 
     private async getCompleted(rapids: Rapid[]) {
@@ -58,9 +60,13 @@ export class RapidService {
     }
 
     private async handleCompletion(rapids: Rapid[], trx: EntityManager) {
-        const toComplete = await Rapid.completeChallenges(rapids.map(r => r.id));
+        if (rapids.length === 0)
+            return;
+        const toComplete = await Rapid.completeChallenges(rapids.map(r => r.id), trx);
+
         for (let rapid of toComplete) {
-            const owner = await User.creditBalance(rapid.owner.id, rapid.amount);
+            console.log(rapid.owner)
+            const owner = await User.creditBalance(rapid.owner.id, rapid.amount, trx);
             const transaction = Transaction.create({
                 owner,
                 amount: rapid.amount,
@@ -73,13 +79,17 @@ export class RapidService {
         }
     }
 
-    private async handleConvertTo30(rapids: Rapid[]) {
+    private async handleConvertTo30(rapids: Rapid[], trx: EntityManager) {
+        if (rapids.length === 0)
+            return;
         const endDate = new Date(moment().add(21, 'days').set('hours', 23).set('minutes', 59).set('seconds', 0).format());
-        await Rapid.updateToNext(rapids.map(r => r.id), endDate);
+        await Rapid.updateToNext(rapids.map(r => r.id), endDate, trx);
     }
 
-    private handleStartNew(rapids: Rapid[], trx: EntityManager) {
-        return Promise.all(rapids.map(r => this.newChallenge(r.owner, trx)));
+    private async handleStartNew(rapids: Rapid[], trx: EntityManager) {
+        for (let rapid of rapids) {
+            await this.newChallenge(rapid.owner, trx)
+        }
     }
 
     private getDays(startDate: Date, endDate: Date) {

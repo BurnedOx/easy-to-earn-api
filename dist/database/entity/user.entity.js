@@ -55,9 +55,16 @@ let User = (() => {
                 .andWhere("user.autopooledAt > :aDate", { aDate: user.autopooledAt })
                 .getMany();
         }
-        static async creditBalance(id, amount) {
+        static async creditBalance(id, amount, trx) {
+            let result;
             const user = await this.findOne(id);
-            const result = await this.update(id, { balance: user.balance + amount });
+            const options = { balance: user.balance + amount };
+            if (trx) {
+                result = await trx.update(this, { id }, options);
+            }
+            else {
+                result = await this.update(id, options);
+            }
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the user. Entity might be missing. Check " + id);
             }

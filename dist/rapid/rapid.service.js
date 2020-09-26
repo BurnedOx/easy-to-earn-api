@@ -38,12 +38,14 @@ let RapidService = (() => {
             return challenge.save();
         }
         checkForCompletion() {
-            return typeorm_1.getManager().transaction(async (trx) => {
+            typeorm_1.getManager().transaction(async (trx) => {
+                console.log('Cron Executed');
                 const incomplete = await rapid_entity_1.Rapid.findIncomplete();
                 const [completed, incomplete7days, incomplete30days] = await this.getCompleted(incomplete);
-                await this.handleCompletion(completed, trx);
-                await this.handleConvertTo30(incomplete7days);
-                await this.handleStartNew(incomplete30days, trx);
+                console.log(completed, incomplete7days, incomplete30days);
+                await this.handleCompletion(completed, trx).catch(e => console.log('comlpetion error', e));
+                await this.handleConvertTo30(incomplete7days, trx).catch(e => console.log('30days error', e));
+                await this.handleStartNew(incomplete30days, trx).catch(e => console.log('7days error', e));
             });
         }
         async getCompleted(rapids) {
@@ -66,9 +68,12 @@ let RapidService = (() => {
             return [completed, incomplete7days, incomplete30days];
         }
         async handleCompletion(rapids, trx) {
-            const toComplete = await rapid_entity_1.Rapid.completeChallenges(rapids.map(r => r.id));
+            if (rapids.length === 0)
+                return;
+            const toComplete = await rapid_entity_1.Rapid.completeChallenges(rapids.map(r => r.id), trx);
             for (let rapid of toComplete) {
-                const owner = await user_entity_1.User.creditBalance(rapid.owner.id, rapid.amount);
+                console.log(rapid.owner);
+                const owner = await user_entity_1.User.creditBalance(rapid.owner.id, rapid.amount, trx);
                 const transaction = transaction_entity_1.Transaction.create({
                     owner,
                     amount: rapid.amount,
@@ -80,12 +85,16 @@ let RapidService = (() => {
                 await this.newChallenge(owner, trx);
             }
         }
-        async handleConvertTo30(rapids) {
+        async handleConvertTo30(rapids, trx) {
+            if (rapids.length === 0)
+                return;
             const endDate = new Date(moment().add(21, 'days').set('hours', 23).set('minutes', 59).set('seconds', 0).format());
-            await rapid_entity_1.Rapid.updateToNext(rapids.map(r => r.id), endDate);
+            await rapid_entity_1.Rapid.updateToNext(rapids.map(r => r.id), endDate, trx);
         }
-        handleStartNew(rapids, trx) {
-            return Promise.all(rapids.map(r => this.newChallenge(r.owner, trx)));
+        async handleStartNew(rapids, trx) {
+            for (let rapid of rapids) {
+                await this.newChallenge(rapid.owner, trx);
+            }
         }
         getDays(startDate, endDate) {
             const aDate = moment([startDate.getFullYear(), startDate.getMonth(), startDate.getDate()]);
