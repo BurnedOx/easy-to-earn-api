@@ -103,7 +103,7 @@ let RapidService = (() => {
         }
     };
     __decorate([
-        schedule_1.Cron('0 0 * * *'),
+        schedule_1.Cron('0 0 * * *', { timeZone: 'Asia/Calcutta' }),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", []),
         __metadata("design:returntype", void 0)

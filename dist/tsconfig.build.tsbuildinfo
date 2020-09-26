@@ -5377,7 +5377,7 @@
         "affectsGlobalScope": false
       },
       "../src/rapid/rapid.service.ts": {
-        "version": "57da0c09ff13012d4684426f582e134f8e9169e0a07598bbf6e414092e41b58e",
+        "version": "43378f020f5633b940c9a8ec37041b80c03ce3061fb1640fea35cf084bf4004e",
         "signature": "832d2d9bcd879cd066275a1bd764d94195cb210285512bb71111528ca267ca56",
         "affectsGlobalScope": false
       },

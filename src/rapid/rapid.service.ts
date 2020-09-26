@@ -28,7 +28,7 @@ export class RapidService {
         return challenge.save();
     }
 
-    @Cron('0 0 * * *')
+    @Cron('0 0 * * *', { timeZone: 'Asia/Calcutta' })
     checkForCompletion() {
         getManager().transaction(async trx => {
             console.log('Cron Executed');
