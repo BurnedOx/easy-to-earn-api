@@ -13,6 +13,8 @@ import { WithdrawalModule } from './withdrawal/withdrawal.module';
 import { TransactionModule } from './transaction/transaction.module';
 import { ConfigModule } from '@nestjs/config';
 import { RapidModule } from './rapid/rapid.module';
+import { UserEpinModule } from './user-epin/user-epin.module';
+import { EpinHistoryModule } from './epin-history/epin-history.module';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { RapidModule } from './rapid/rapid.module';
       isGlobal: true,
       envFilePath: '.env'
     }),
-    AccountsModule, CommonModule, EpinModule, MembersModule, IncomeModule, RankModule, WithdrawalModule, TransactionModule, RapidModule
+    AccountsModule, CommonModule, EpinModule, MembersModule, IncomeModule, RankModule, WithdrawalModule, TransactionModule, RapidModule, UserEpinModule, EpinHistoryModule
   ],
   controllers: [AppController],
   providers: [AppService],
