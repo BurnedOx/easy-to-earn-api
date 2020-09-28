@@ -7,6 +7,8 @@ import { Rank } from "./rank.entity";
 import { Withdrawal } from "./withdrawal.entity";
 import { Transaction } from "./transaction.entity";
 import { Rapid } from "./rapid.entity";
+import { UserEpin } from "./userEpin.entity";
+import { EpinHistory } from "./epinHistory.entity";
 export declare class User extends Base {
     name: string;
     mobile: number;
@@ -28,6 +30,8 @@ export declare class User extends Base {
     ranks: Rank[];
     withdrawals: Withdrawal[];
     trx: Transaction[];
+    parchasedEpins: UserEpin[];
+    epinHistory: EpinHistory[];
     hashPassword(): Promise<void>;
     static findById(id: string): import("rxjs").Observable<User>;
     static findDirectForRapid(sponsorId: string, startDate: Date, endDate: Date): Promise<[User[], number]>;

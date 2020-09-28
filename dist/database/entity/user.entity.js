@@ -21,6 +21,8 @@ const transaction_entity_1 = require("./transaction.entity");
 const rxjs_1 = require("rxjs");
 const operators_1 = require("rxjs/operators");
 const rapid_entity_1 = require("./rapid.entity");
+const userEpin_entity_1 = require("./userEpin.entity");
+const epinHistory_entity_1 = require("./epinHistory.entity");
 let User = (() => {
     var User_1;
     let User = User_1 = class User extends base_entity_1.Base {
@@ -185,6 +187,14 @@ let User = (() => {
         typeorm_1.OneToMany(() => transaction_entity_1.Transaction, trx => trx.owner),
         __metadata("design:type", Array)
     ], User.prototype, "trx", void 0);
+    __decorate([
+        typeorm_1.OneToMany(() => userEpin_entity_1.UserEpin, userEpin => userEpin.owner),
+        __metadata("design:type", Array)
+    ], User.prototype, "parchasedEpins", void 0);
+    __decorate([
+        typeorm_1.OneToMany(() => epinHistory_entity_1.EpinHistory, epinHistory => epinHistory.owner),
+        __metadata("design:type", Array)
+    ], User.prototype, "epinHistory", void 0);
     __decorate([
         typeorm_1.BeforeInsert(),
         __metadata("design:type", Function),

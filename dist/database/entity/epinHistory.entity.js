@@ -9,46 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserEpin = void 0;
-const class_transformer_1 = require("class-transformer");
+exports.EpinHistory = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./base.entity");
 const epin_entity_1 = require("./epin.entity");
 const user_entity_1 = require("./user.entity");
-let UserEpin = (() => {
-    let UserEpin = class UserEpin extends base_entity_1.Base {
-        get status() {
-            return this.epin.owner ? 'used' : 'unused';
-        }
-        static getByUserId(userId, status = 'unused') {
-            return this.createQueryBuilder('userEpin')
-                .leftJoinAndSelect('userEpin.epin', 'epin')
-                .leftJoin('userEpin.owner', 'owner')
-                .where('owner.id = :userId', { userId })
-                .andWhere('userEpin.status = :status', { status })
-                .getManyAndCount();
-        }
+let EpinHistory = (() => {
+    let EpinHistory = class EpinHistory extends base_entity_1.Base {
     };
     __decorate([
-        typeorm_1.ManyToOne(() => user_entity_1.User, user => user.parchasedEpins, { onDelete: 'CASCADE' }),
+        typeorm_1.ManyToOne(() => user_entity_1.User, user => user.epinHistory, { onDelete: 'CASCADE' }),
         typeorm_1.JoinColumn(),
         __metadata("design:type", user_entity_1.User)
-    ], UserEpin.prototype, "owner", void 0);
+    ], EpinHistory.prototype, "owner", void 0);
     __decorate([
-        typeorm_1.OneToOne(() => epin_entity_1.EPin, epin => epin.prachsedBy, { onDelete: 'CASCADE' }),
+        typeorm_1.ManyToOne(() => epin_entity_1.EPin, epin => epin.history, { onDelete: 'CASCADE' }),
         typeorm_1.JoinColumn(),
         __metadata("design:type", epin_entity_1.EPin)
-    ], UserEpin.prototype, "epin", void 0);
+    ], EpinHistory.prototype, "epin", void 0);
     __decorate([
-        class_transformer_1.Expose(),
         typeorm_1.Column('text'),
-        __metadata("design:type", Object),
-        __metadata("design:paramtypes", [])
-    ], UserEpin.prototype, "status", null);
-    UserEpin = __decorate([
+        __metadata("design:type", String)
+    ], EpinHistory.prototype, "remark", void 0);
+    EpinHistory = __decorate([
         typeorm_1.Entity()
-    ], UserEpin);
-    return UserEpin;
+    ], EpinHistory);
+    return EpinHistory;
 })();
-exports.UserEpin = UserEpin;
-//# sourceMappingURL=userEpin.entity.js.map
+exports.EpinHistory = EpinHistory;
+//# sourceMappingURL=epinHistory.entity.js.map

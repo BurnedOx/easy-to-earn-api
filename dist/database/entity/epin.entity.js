@@ -13,6 +13,8 @@ exports.EPin = void 0;
 const typeorm_1 = require("typeorm");
 const base_entity_1 = require("./base.entity");
 const user_entity_1 = require("./user.entity");
+const userEpin_entity_1 = require("./userEpin.entity");
+const epinHistory_entity_1 = require("./epinHistory.entity");
 let EPin = (() => {
     let EPin = class EPin extends base_entity_1.Base {
         static getAll() {
@@ -46,6 +48,14 @@ let EPin = (() => {
         typeorm_1.OneToOne(type => user_entity_1.User, user => user.epin, { nullable: true, onDelete: 'SET NULL' }),
         __metadata("design:type", user_entity_1.User)
     ], EPin.prototype, "owner", void 0);
+    __decorate([
+        typeorm_1.OneToOne(() => userEpin_entity_1.UserEpin, userEpin => userEpin.epin, { nullable: true, onDelete: 'SET NULL' }),
+        __metadata("design:type", userEpin_entity_1.UserEpin)
+    ], EPin.prototype, "prachsedBy", void 0);
+    __decorate([
+        typeorm_1.OneToMany(() => epinHistory_entity_1.EpinHistory, epinHistory => epinHistory.epin),
+        __metadata("design:type", Array)
+    ], EPin.prototype, "history", void 0);
     EPin = __decorate([
         typeorm_1.Entity()
     ], EPin);

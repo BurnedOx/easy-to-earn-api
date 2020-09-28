@@ -22,6 +22,8 @@ const withdrawal_module_1 = require("./withdrawal/withdrawal.module");
 const transaction_module_1 = require("./transaction/transaction.module");
 const config_1 = require("@nestjs/config");
 const rapid_module_1 = require("./rapid/rapid.module");
+const user_epin_module_1 = require("./user-epin/user-epin.module");
+const epin_history_module_1 = require("./epin-history/epin-history.module");
 let AppModule = (() => {
     let AppModule = class AppModule {
     };
@@ -34,7 +36,7 @@ let AppModule = (() => {
                     isGlobal: true,
                     envFilePath: '.env'
                 }),
-                accounts_module_1.AccountsModule, common_module_1.CommonModule, epin_module_1.EpinModule, members_module_1.MembersModule, income_module_1.IncomeModule, rank_module_1.RankModule, withdrawal_module_1.WithdrawalModule, transaction_module_1.TransactionModule, rapid_module_1.RapidModule
+                accounts_module_1.AccountsModule, common_module_1.CommonModule, epin_module_1.EpinModule, members_module_1.MembersModule, income_module_1.IncomeModule, rank_module_1.RankModule, withdrawal_module_1.WithdrawalModule, transaction_module_1.TransactionModule, rapid_module_1.RapidModule, user_epin_module_1.UserEpinModule, epin_history_module_1.EpinHistoryModule
             ],
             controllers: [app_controller_1.AppController],
             providers: [app_service_1.AppService],

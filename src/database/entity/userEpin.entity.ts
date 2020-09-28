@@ -19,4 +19,13 @@ export class UserEpin extends Base {
     get status() {
         return this.epin.owner ? 'used' : 'unused';
     }
+
+    public static getByUserId(userId: string, status: 'used' | 'unused' = 'unused') {
+        return this.createQueryBuilder('userEpin')
+            .leftJoinAndSelect('userEpin.epin', 'epin')
+            .leftJoin('userEpin.owner', 'owner')
+            .where('owner.id = :userId', { userId })
+            .andWhere('userEpin.status = :status', { status })
+            .getManyAndCount()
+    }
 }

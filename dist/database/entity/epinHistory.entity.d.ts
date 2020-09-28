@@ -1,0 +1,8 @@
+import { Base } from "./base.entity";
+import { EPin } from "./epin.entity";
+import { User } from "./user.entity";
+export declare class EpinHistory extends Base {
+    owner: User;
+    epin: EPin;
+    remark: string;
+}
