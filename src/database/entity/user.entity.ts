@@ -13,6 +13,7 @@ import { Expose } from "class-transformer";
 import { Rapid } from "./rapid.entity";
 import { userInfo } from "os";
 import { UserEpin } from "./userEpin.entity";
+import { EpinHistory } from "./epinHistory.entity";
 
 @Entity()
 export class User extends Base {
@@ -80,6 +81,9 @@ export class User extends Base {
 
     @OneToMany(() => UserEpin, userEpin => userEpin.owner)
     parchasedEpins: UserEpin[];
+
+    @OneToMany(() => EpinHistory, epinHistory => epinHistory.owner)
+    epinHistory: EpinHistory[];
 
     @BeforeInsert()
     async hashPassword() {
