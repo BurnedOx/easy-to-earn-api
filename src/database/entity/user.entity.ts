@@ -12,6 +12,7 @@ import { map } from "rxjs/operators";
 import { Expose } from "class-transformer";
 import { Rapid } from "./rapid.entity";
 import { userInfo } from "os";
+import { UserEpin } from "./userEpin.entity";
 
 @Entity()
 export class User extends Base {
@@ -76,6 +77,9 @@ export class User extends Base {
 
     @OneToMany(() => Transaction, trx => trx.owner)
     trx: Transaction[];
+
+    @OneToMany(() => UserEpin, userEpin => userEpin.owner)
+    parchasedEpins: UserEpin[];
 
     @BeforeInsert()
     async hashPassword() {

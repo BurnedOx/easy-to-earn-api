@@ -2,11 +2,15 @@ import { Entity, OneToOne, JoinColumn } from "typeorm";
 import { Base } from "./base.entity";
 import { User } from "./user.entity";
 import { EpinRO } from "src/interfaces";
+import { UserEpin } from "./userEpin.entity";
 
 @Entity()
 export class EPin extends Base {
     @OneToOne(type => User, user => user.epin, { nullable: true, onDelete: 'SET NULL' })
     owner: User | null;
+
+    @OneToOne(() => UserEpin, userEpin => userEpin.epin, { nullable: true, onDelete: 'SET NULL' })
+    prachsedBy: UserEpin | null;
 
     public static getAll() {
         return this.createQueryBuilder("epin")
