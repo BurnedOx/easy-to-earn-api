@@ -11,7 +11,7 @@ export class EPin extends Base {
     owner: User | null;
 
     @OneToOne(() => UserEpin, userEpin => userEpin.epin, { nullable: true, onDelete: 'SET NULL' })
-    prachsedBy: UserEpin | null;
+    purchasedBy: UserEpin | null;
 
     @OneToMany(() => EpinHistory, epinHistory => epinHistory.epin)
     history: EpinHistory[];
@@ -19,6 +19,7 @@ export class EPin extends Base {
     public static getAll() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
+            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }
@@ -26,7 +27,9 @@ export class EPin extends Base {
     public static getUsed() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
+            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
             .where("owner.epin IS NOT NULL")
+            .orWhere("purchasedBy IS NOT NULL")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }
@@ -34,7 +37,9 @@ export class EPin extends Base {
     public static getUnused() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
+            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
             .where("owner IS NULL")
+            .andWhere("purchasedBy IS NULL")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }

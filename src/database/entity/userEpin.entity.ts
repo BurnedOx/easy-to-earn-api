@@ -10,7 +10,7 @@ export class UserEpin extends Base {
     @JoinColumn()
     owner: User;
 
-    @OneToOne(() => EPin, epin => epin.prachsedBy, { onDelete: 'CASCADE' })
+    @OneToOne(() => EPin, epin => epin.purchasedBy, { onDelete: 'CASCADE' })
     @JoinColumn()
     epin: EPin;
 
@@ -23,7 +23,7 @@ export class UserEpin extends Base {
     public static getByUserId(userId: string, status: 'used' | 'unused' = 'unused') {
         return this.createQueryBuilder('userEpin')
             .leftJoinAndSelect('userEpin.epin', 'epin')
-            .leftJoin('userEpin.owner', 'owner')
+            .leftJoinAndSelect('userEpin.owner', 'owner')
             .where('owner.id = :userId', { userId })
             .andWhere('userEpin.status = :status', { status })
             .getManyAndCount()

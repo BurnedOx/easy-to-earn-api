@@ -30,6 +30,7 @@ import { Transaction } from 'src/database/entity/transaction.entity';
     })
   ],
   controllers: [AccountsController],
-  providers: [AccountsService, JwtAuthGuard, JwtStrategy, AWSHandler]
+  providers: [AccountsService, JwtAuthGuard, JwtStrategy, AWSHandler],
+  exports: [AccountsService]
 })
 export class AccountsModule { }

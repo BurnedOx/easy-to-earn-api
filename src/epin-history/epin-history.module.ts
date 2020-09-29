@@ -4,6 +4,7 @@ import { EpinHistoryService } from './epin-history.service';
 
 @Module({
   controllers: [EpinHistoryController],
-  providers: [EpinHistoryService]
+  providers: [EpinHistoryService],
+  exports: [EpinHistoryService]
 })
 export class EpinHistoryModule {}
