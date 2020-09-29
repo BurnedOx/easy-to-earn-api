@@ -1,9 +1,10 @@
-import { Entity, OneToOne, OneToMany } from "typeorm";
+import { Entity, OneToOne, OneToMany, JoinColumn } from "typeorm";
 import { Base } from "./base.entity";
 import { User } from "./user.entity";
 import { EpinRO } from "src/interfaces";
 import { UserEpin } from "./userEpin.entity";
 import { EpinHistory } from "./epinHistory.entity";
+import { Expose } from "class-transformer";
 
 @Entity()
 export class EPin extends Base {
@@ -11,7 +12,7 @@ export class EPin extends Base {
     owner: User | null;
 
     @OneToOne(() => UserEpin, userEpin => userEpin.epin, { nullable: true, onDelete: 'SET NULL' })
-    purchasedBy: UserEpin | null;
+    purchasedby: UserEpin | null;
 
     @OneToMany(() => EpinHistory, epinHistory => epinHistory.epin)
     history: EpinHistory[];
@@ -19,7 +20,7 @@ export class EPin extends Base {
     public static getAll() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
-            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+            .leftJoinAndSelect("epin.purchasedby", "purchasedby")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }
@@ -27,9 +28,9 @@ export class EPin extends Base {
     public static getUsed() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
-            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+            .leftJoinAndSelect("epin.purchasedby", "purchasedby")
             .where("owner.epin IS NOT NULL")
-            .orWhere("purchasedBy IS NOT NULL")
+            .orWhere("purchasedby IS NOT NULL")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }
@@ -37,9 +38,9 @@ export class EPin extends Base {
     public static getUnused() {
         return this.createQueryBuilder("epin")
             .leftJoinAndSelect("epin.owner", "owner")
-            .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+            .leftJoinAndSelect("epin.purchasedby", "purchasedby")
             .where("owner IS NULL")
-            .andWhere("purchasedBy IS NULL")
+            .andWhere("purchasedby IS NULL")
             .orderBy("epin.createdAt", "DESC")
             .getMany();
     }

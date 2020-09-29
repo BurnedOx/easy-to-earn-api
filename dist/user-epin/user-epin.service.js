@@ -56,11 +56,16 @@ let UserEpinService = (() => {
             if (count < 1) {
                 throw new common_1.HttpException('Not enought epin', common_1.HttpStatus.NOT_ACCEPTABLE);
             }
-            const { id, epin, owner } = availableEPins[0];
+            const userEpin = availableEPins[0];
+            const { id, epin, owner } = userEpin;
             const user = await this.accountsService.activateAccount(epin.id, userId);
+            userEpin.status = 'used';
             const history = this.historyService
                 .createHistory(owner, epin, `Activated account for ${user.id} (${user.name})`);
-            await epinHistory_entity_1.EpinHistory.save(history);
+            await typeorm_1.getManager().transaction(async (trx) => {
+                await trx.save(userEpin);
+                await trx.save(history);
+            });
             return id;
         }
         async sendFromAdmin(data) {

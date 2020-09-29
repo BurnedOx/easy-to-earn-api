@@ -20,25 +20,25 @@ let EPin = (() => {
         static getAll() {
             return this.createQueryBuilder("epin")
                 .leftJoinAndSelect("epin.owner", "owner")
-                .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+                .leftJoinAndSelect("epin.purchasedby", "purchasedby")
                 .orderBy("epin.createdAt", "DESC")
                 .getMany();
         }
         static getUsed() {
             return this.createQueryBuilder("epin")
                 .leftJoinAndSelect("epin.owner", "owner")
-                .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+                .leftJoinAndSelect("epin.purchasedby", "purchasedby")
                 .where("owner.epin IS NOT NULL")
-                .orWhere("purchasedBy IS NOT NULL")
+                .orWhere("purchasedby IS NOT NULL")
                 .orderBy("epin.createdAt", "DESC")
                 .getMany();
         }
         static getUnused() {
             return this.createQueryBuilder("epin")
                 .leftJoinAndSelect("epin.owner", "owner")
-                .leftJoinAndSelect("epin.purchasedBy", "purchasedBy")
+                .leftJoinAndSelect("epin.purchasedby", "purchasedby")
                 .where("owner IS NULL")
-                .andWhere("purchasedBy IS NULL")
+                .andWhere("purchasedby IS NULL")
                 .orderBy("epin.createdAt", "DESC")
                 .getMany();
         }
@@ -56,7 +56,7 @@ let EPin = (() => {
     __decorate([
         typeorm_1.OneToOne(() => userEpin_entity_1.UserEpin, userEpin => userEpin.epin, { nullable: true, onDelete: 'SET NULL' }),
         __metadata("design:type", userEpin_entity_1.UserEpin)
-    ], EPin.prototype, "purchasedBy", void 0);
+    ], EPin.prototype, "purchasedby", void 0);
     __decorate([
         typeorm_1.OneToMany(() => epinHistory_entity_1.EpinHistory, epinHistory => epinHistory.epin),
         __metadata("design:type", Array)

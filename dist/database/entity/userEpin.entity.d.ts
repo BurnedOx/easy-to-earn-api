@@ -4,6 +4,6 @@ import { User } from "./user.entity";
 export declare class UserEpin extends Base {
     owner: User;
     epin: EPin;
-    get status(): "used" | "unused";
+    status: 'used' | 'unused';
     static getByUserId(userId: string, status?: 'used' | 'unused'): Promise<[UserEpin[], number]>;
 }

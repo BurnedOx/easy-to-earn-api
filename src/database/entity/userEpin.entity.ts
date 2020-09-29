@@ -1,4 +1,4 @@
-import { Expose } from "class-transformer";
+import { Exclude, Expose } from "class-transformer";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { Base } from "./base.entity";
 import { EPin } from "./epin.entity";
@@ -10,15 +10,12 @@ export class UserEpin extends Base {
     @JoinColumn()
     owner: User;
 
-    @OneToOne(() => EPin, epin => epin.purchasedBy, { onDelete: 'CASCADE' })
+    @OneToOne(() => EPin, epin => epin.purchasedby)
     @JoinColumn()
     epin: EPin;
 
-    @Expose()
-    @Column('text')
-    get status() {
-        return this.epin.owner ? 'used' : 'unused';
-    }
+    @Column('text', { default: 'unused' })
+    status: 'used' | 'unused';
 
     public static getByUserId(userId: string, status: 'used' | 'unused' = 'unused') {
         return this.createQueryBuilder('userEpin')

@@ -57,12 +57,17 @@ export class UserEpinService {
             throw new HttpException('Not enought epin', HttpStatus.NOT_ACCEPTABLE);
         }
 
-        const { id, epin, owner } = availableEPins[0];
-
+        const userEpin = availableEPins[0];
+        const { id, epin, owner } = userEpin;
         const user = await this.accountsService.activateAccount(epin.id, userId);
+        userEpin.status = 'used';
         const history = this.historyService
             .createHistory(owner, epin, `Activated account for ${user.id} (${user.name})`);
-        await EpinHistory.save(history);
+        
+        await getManager().transaction(async trx => {
+            await trx.save(userEpin);
+            await trx.save(history);
+        });
 
         return id;
     }
