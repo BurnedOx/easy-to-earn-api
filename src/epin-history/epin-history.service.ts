@@ -8,4 +8,8 @@ export class EpinHistoryService {
     public createHistory(owner: User, epin: EPin, remark: string) {
         return EpinHistory.create({ owner, epin, remark });
     }
+
+    getAll(userId: string) {
+        return EpinHistory.getByUserId(userId);
+    }
 }

@@ -15,4 +15,12 @@ export class EpinHistory extends Base {
 
     @Column('text')
     remark: string;
+
+    public static getByUserId(userId: string) {
+        return this.createQueryBuilder('history')
+            .leftJoinAndSelect('history.epin', 'epin')
+            .leftJoin('history.owner', 'owner')
+            .where('owner.id = :ownerId', { ownerId: userId })
+            .getMany();
+    }
 }
