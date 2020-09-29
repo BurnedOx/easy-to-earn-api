@@ -16,6 +16,13 @@ const epin_entity_1 = require("./epin.entity");
 const user_entity_1 = require("./user.entity");
 let EpinHistory = (() => {
     let EpinHistory = class EpinHistory extends base_entity_1.Base {
+        static getByUserId(userId) {
+            return this.createQueryBuilder('history')
+                .leftJoinAndSelect('history.epin', 'epin')
+                .leftJoin('history.owner', 'owner')
+                .where('owner.id = :ownerId', { ownerId: userId })
+                .getMany();
+        }
     };
     __decorate([
         typeorm_1.ManyToOne(() => user_entity_1.User, user => user.epinHistory, { onDelete: 'CASCADE' }),

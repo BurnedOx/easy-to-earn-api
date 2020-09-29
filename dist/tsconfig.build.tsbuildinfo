@@ -2547,18 +2547,18 @@
         "affectsGlobalScope": false
       },
       "../src/database/entity/userepin.entity.ts": {
-        "version": "fbdffdb300ef697e5e66a5c7785bc957fdf25b921b348a4ba2f2c3479383d7a8",
+        "version": "2da027fe3973a63e2c3a7433c0f963164491f43d37d3b4ccce60852e61275c04",
         "signature": "d2ad153602a6646e1ca66e2be3c6d27854b8f1769c717bf453bea433b39584c8",
         "affectsGlobalScope": false
       },
       "../src/database/entity/epinhistory.entity.ts": {
-        "version": "0e89f9144a973469fa8f47b6af67a2099069f89f5db42ae62429285d9cb22069",
-        "signature": "8b2a361d4f9fd6d8e01c2dff7bd6c0bcca5680c81eceea4f3f8868ca8aced014",
+        "version": "7489c1e76b0fabcb395de31b3daa2dfbd80b8d1fb5d17f83db3e1fe32e960bc1",
+        "signature": "079ef76f819a64e25405789120293dc6772a0195c8c5e3401d320d22fb34a349",
         "affectsGlobalScope": false
       },
       "../src/database/entity/epin.entity.ts": {
-        "version": "a1db3637716f6b8422db738ffcc090b5d083bf62863206ab5e029e8cace9fc58",
-        "signature": "71eea86740d79ca57f487176f80b3a1d9be286816d5511c1d57e2ea43b0e8767",
+        "version": "4e1805972e130c04292df1dbe781aa012156a8ad973e140003e33113c93ed5ce",
+        "signature": "51c5c7d36b232f38a81f1158c29704fe3756b19bdd1c4b28252eecf2efc81e01",
         "affectsGlobalScope": false
       },
       "../src/database/entity/income.entity.ts": {
@@ -5827,7 +5827,7 @@
         "affectsGlobalScope": false
       },
       "../src/accounts/accounts.module.ts": {
-        "version": "27837abb81d6971b79ff6f4b269f2d34b6a5b05fad647db700ebf51e5bc454b5",
+        "version": "da9c185b845f4c7c18b2f5511ddf0b10b8a1b91d876a892a7898949939b623b0",
         "signature": "ea58d875d88ad3fbdddd073ad89b3e13456607bc13ffb3df2db8dbaca87a35d5",
         "affectsGlobalScope": false
       },
@@ -5921,33 +5921,38 @@
         "signature": "f2da6625feeaeedb55f7fa389074a32670f50fa78189eb9bafd65ac56eb29963",
         "affectsGlobalScope": false
       },
+      "../src/epin-history/epin-history.service.ts": {
+        "version": "3f3cfc25587289e070475f777eaa453b2786bb259668a028287a77520060ff0c",
+        "signature": "881ecf057d81de2cbbfaf2ea0b267a0f82a7f09e9d72981b740179682e491f99",
+        "affectsGlobalScope": false
+      },
+      "../src/user-epin/user-epin.dto.ts": {
+        "version": "021141cd56b7dc600eb296d0396e10fd0c57d43c9cee1cdaf444aa2af7896dfa",
+        "signature": "bd32a4d4d4e5d5428363b47f44b312939c1a7e29baf23d07fa9864092a0aa260",
+        "affectsGlobalScope": false
+      },
       "../src/user-epin/user-epin.service.ts": {
-        "version": "f06e3ba7041b250c4a40746e4394d59eeea24e6f44172ce49a0f2ea24d313586",
-        "signature": "cfad362a33e15032b3b353ce9de5306406038017b40991b1a1261d481fe99671",
+        "version": "0909830d20c6155108f5ee27e7ce382eee6c7301803ccef90cfcee4a39a04212",
+        "signature": "50a1ce1a894f2597c39d65dd3d80590da7dc81bb065f5b6cde038975b4928ec9",
         "affectsGlobalScope": false
       },
       "../src/user-epin/user-epin.controller.ts": {
-        "version": "fdeb06f26e4fca475df97f1ff7c0e04454c479bdc122a3f44da4bf50458d2ffa",
-        "signature": "d67627a9a5810f939b9fe3152daccb7cb3c4a3de0c0ef17b648feddde5e5f6ec",
+        "version": "b591f6d6fbaf0ac30a8dfcc5b9083124b45b185c21a69ad6768d84ec63f22830",
+        "signature": "34888ece6fa46945954c51b1912026d65c23cbe1e18d3811d40dc4cf89631fac",
         "affectsGlobalScope": false
       },
       "../src/user-epin/user-epin.module.ts": {
-        "version": "40dc74f33032f1e42311d9e624b7b27f4a16cb680b08d0b089b56d7f4a014c84",
+        "version": "c491e75b4bc967189f6601c18fdb90313fe179f313b57daba4e6dea1896716b6",
         "signature": "44c8a99bf1962eb74e68b37c94d67464ed40155baa78d38181c56bd9b6125de1",
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.controller.ts": {
-        "version": "ad9cd6a6b0ec3235477f1ce87d65e97da1b22a97d96109ae090e5c93540b8d0f",
-        "signature": "b97a66a849ae05d542dfcfc89d74013048df004f3176f34e8abeeaa5b405c816",
-        "affectsGlobalScope": false
-      },
-      "../src/epin-history/epin-history.service.ts": {
-        "version": "23b8b8394c75ab7a13dc6d18aba335b3fccbf641f285f882b011ed3bb61853a2",
-        "signature": "985d134aeb1dbb7a3831ddf7adba6ff0a7a70bb6ffdc47b85db10a2b0056a2c3",
+        "version": "a931a2891434846c9683fed7f057733ba80ebb9534d93a7310990a41352f056e",
+        "signature": "4694cc15068a4b95515603868c49bbc92df258e948317ad5b22e57839293406e",
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.module.ts": {
-        "version": "cdd3f21b8fe72f74a1db89d37192ebb5c686ddf1d963c0abacf847ee27d0305e",
+        "version": "6929f3508f86b8c254ea14026acad380343986470c1aa93b53f094de6b88f426",
         "signature": "a9a6c9b4169a799952ad9ed543244c5f9be19b163951afefbe3bac28ea197902",
         "affectsGlobalScope": false
       },
@@ -5962,11 +5967,6 @@
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.dto.ts": {
-        "version": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-        "affectsGlobalScope": false
-      },
-      "../src/user-epin/user-epin.dto.ts": {
         "version": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
         "affectsGlobalScope": false
@@ -18297,7 +18297,12 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
+        "../node_modules/@types/node/util.d.ts",
+        "../src/common/decorators/common-header-decorator.ts",
+        "../src/common/dto/base-header.dto.ts",
+        "../src/common/guards/jwt.guard.ts",
+        "../src/common/validation.pipe.ts",
+        "../src/epin-history/epin-history.service.ts"
       ],
       "../src/epin-history/epin-history.dto.ts": [
         "../node_modules/@types/graceful-fs/index.d.ts",
@@ -18322,7 +18327,10 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
+        "../node_modules/@types/node/util.d.ts",
+        "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/epinhistory.entity.ts",
+        "../src/database/entity/user.entity.ts"
       ],
       "../src/epin/epin.controller.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
@@ -18597,14 +18605,23 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
+        "../node_modules/@types/node/util.d.ts",
+        "../src/common/decorators/common-header-decorator.ts",
+        "../src/common/decorators/roles-decorator.ts",
+        "../src/common/dto/base-header.dto.ts",
+        "../src/common/guards/jwt.guard.ts",
+        "../src/common/guards/roles.guard.ts",
+        "../src/common/validation.pipe.ts",
+        "../src/user-epin/user-epin.dto.ts",
+        "../src/user-epin/user-epin.service.ts"
       ],
       "../src/user-epin/user-epin.dto.ts": [
         "../node_modules/@types/graceful-fs/index.d.ts",
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/class-validator/types/index.d.ts"
       ],
       "../src/user-epin/user-epin.module.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
@@ -18613,6 +18630,7 @@
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
+        "../src/accounts/accounts.module.ts",
         "../src/user-epin/user-epin.controller.ts",
         "../src/user-epin/user-epin.service.ts"
       ],
@@ -18622,7 +18640,15 @@
         "../node_modules/@types/node/fs.d.ts",
         "../node_modules/@types/node/ts3.2/fs.d.ts",
         "../node_modules/@types/node/ts3.2/util.d.ts",
-        "../node_modules/@types/node/util.d.ts"
+        "../node_modules/@types/node/util.d.ts",
+        "../node_modules/typeorm/index.d.ts",
+        "../src/accounts/accounts.service.ts",
+        "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/epinhistory.entity.ts",
+        "../src/database/entity/user.entity.ts",
+        "../src/database/entity/userepin.entity.ts",
+        "../src/epin-history/epin-history.service.ts",
+        "../src/user-epin/user-epin.dto.ts"
       ],
       "../src/withdrawal/withdrawal.controller.ts": [
         "../node_modules/@nestjs/common/index.d.ts",
@@ -30530,6 +30556,16 @@
         "../src/database/entity/user.entity.ts",
         "../src/interfaces.d.ts"
       ],
+      "../src/epin-history/epin-history.controller.ts": [
+        "../src/common/dto/base-header.dto.ts",
+        "../src/database/entity/epinhistory.entity.ts",
+        "../src/epin-history/epin-history.service.ts"
+      ],
+      "../src/epin-history/epin-history.service.ts": [
+        "../src/database/entity/epin.entity.ts",
+        "../src/database/entity/epinhistory.entity.ts",
+        "../src/database/entity/user.entity.ts"
+      ],
       "../src/epin/epin.controller.ts": [
         "../src/common/dto/base-header.dto.ts",
         "../src/epin/epin.service.ts",
@@ -30606,6 +30642,18 @@
         "../src/database/entity/transaction.entity.ts",
         "../src/database/entity/user.entity.ts",
         "../src/interfaces.d.ts"
+      ],
+      "../src/user-epin/user-epin.controller.ts": [
+        "../src/common/dto/base-header.dto.ts",
+        "../src/database/entity/userepin.entity.ts",
+        "../src/user-epin/user-epin.dto.ts",
+        "../src/user-epin/user-epin.service.ts"
+      ],
+      "../src/user-epin/user-epin.service.ts": [
+        "../src/accounts/accounts.service.ts",
+        "../src/database/entity/userepin.entity.ts",
+        "../src/epin-history/epin-history.service.ts",
+        "../src/user-epin/user-epin.dto.ts"
       ],
       "../src/withdrawal/withdrawal.controller.ts": [
         "../src/common/dto/base-header.dto.ts",

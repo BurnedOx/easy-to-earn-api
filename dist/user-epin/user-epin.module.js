@@ -10,11 +10,14 @@ exports.UserEpinModule = void 0;
 const common_1 = require("@nestjs/common");
 const user_epin_service_1 = require("./user-epin.service");
 const user_epin_controller_1 = require("./user-epin.controller");
+const accounts_module_1 = require("../accounts/accounts.module");
 let UserEpinModule = (() => {
-    let UserEpinModule = class UserEpinModule {
+    var UserEpinModule_1;
+    let UserEpinModule = UserEpinModule_1 = class UserEpinModule {
     };
-    UserEpinModule = __decorate([
+    UserEpinModule = UserEpinModule_1 = __decorate([
         common_1.Module({
+            imports: [UserEpinModule_1, accounts_module_1.AccountsModule],
             providers: [user_epin_service_1.UserEpinService],
             controllers: [user_epin_controller_1.UserEpinController]
         })

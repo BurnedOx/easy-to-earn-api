@@ -42,7 +42,8 @@ let AccountsModule = (() => {
                 })
             ],
             controllers: [accounts_controller_1.AccountsController],
-            providers: [accounts_service_1.AccountsService, jwt_guard_1.JwtAuthGuard, jwt_strategy_1.JwtStrategy, aws_1.AWSHandler]
+            providers: [accounts_service_1.AccountsService, jwt_guard_1.JwtAuthGuard, jwt_strategy_1.JwtStrategy, aws_1.AWSHandler],
+            exports: [accounts_service_1.AccountsService]
         })
     ], AccountsModule);
     return AccountsModule;

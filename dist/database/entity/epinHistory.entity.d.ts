@@ -5,4 +5,5 @@ export declare class EpinHistory extends Base {
     owner: User;
     epin: EPin;
     remark: string;
+    static getByUserId(userId: string): Promise<EpinHistory[]>;
 }

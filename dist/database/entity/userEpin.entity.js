@@ -23,7 +23,7 @@ let UserEpin = (() => {
         static getByUserId(userId, status = 'unused') {
             return this.createQueryBuilder('userEpin')
                 .leftJoinAndSelect('userEpin.epin', 'epin')
-                .leftJoin('userEpin.owner', 'owner')
+                .leftJoinAndSelect('userEpin.owner', 'owner')
                 .where('owner.id = :userId', { userId })
                 .andWhere('userEpin.status = :status', { status })
                 .getManyAndCount();
@@ -35,7 +35,7 @@ let UserEpin = (() => {
         __metadata("design:type", user_entity_1.User)
     ], UserEpin.prototype, "owner", void 0);
     __decorate([
-        typeorm_1.OneToOne(() => epin_entity_1.EPin, epin => epin.prachsedBy, { onDelete: 'CASCADE' }),
+        typeorm_1.OneToOne(() => epin_entity_1.EPin, epin => epin.purchasedBy, { onDelete: 'CASCADE' }),
         typeorm_1.JoinColumn(),
         __metadata("design:type", epin_entity_1.EPin)
     ], UserEpin.prototype, "epin", void 0);

@@ -5,7 +5,7 @@ import { UserEpin } from "./userEpin.entity";
 import { EpinHistory } from "./epinHistory.entity";
 export declare class EPin extends Base {
     owner: User | null;
-    prachsedBy: UserEpin | null;
+    purchasedBy: UserEpin | null;
     history: EpinHistory[];
     static getAll(): Promise<EPin[]>;
     static getUsed(): Promise<EPin[]>;

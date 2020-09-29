@@ -16,7 +16,8 @@ let EpinHistoryModule = (() => {
     EpinHistoryModule = __decorate([
         common_1.Module({
             controllers: [epin_history_controller_1.EpinHistoryController],
-            providers: [epin_history_service_1.EpinHistoryService]
+            providers: [epin_history_service_1.EpinHistoryService],
+            exports: [epin_history_service_1.EpinHistoryService]
         })
     ], EpinHistoryModule);
     return EpinHistoryModule;

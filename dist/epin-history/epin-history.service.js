@@ -8,8 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpinHistoryService = void 0;
 const common_1 = require("@nestjs/common");
+const epin_entity_1 = require("../database/entity/epin.entity");
+const epinHistory_entity_1 = require("../database/entity/epinHistory.entity");
+const user_entity_1 = require("../database/entity/user.entity");
 let EpinHistoryService = (() => {
     let EpinHistoryService = class EpinHistoryService {
+        createHistory(owner, epin, remark) {
+            return epinHistory_entity_1.EpinHistory.create({ owner, epin, remark });
+        }
+        getAll(userId) {
+            return epinHistory_entity_1.EpinHistory.getByUserId(userId);
+        }
     };
     EpinHistoryService = __decorate([
         common_1.Injectable()
