@@ -132,19 +132,14 @@ export class User extends Base {
             .getMany();
     }
 
-    public static async creditBalance(id: string, amount: number, trx?: EntityManager) {
-        let result: UpdateResult;
-        const user = await this.findOne(id);
+    public static async creditBalance(id: string, amount: number, trx: EntityManager) {
+        const user = await trx.findOne(this, id);
         const options = { balance: user.balance + amount };
-        if (trx) {
-            result = await trx.update(this, { id }, options)
-        } else {
-            result = await this.update(id, options);
-        }
+        const result = await trx.update(this, { id }, options)
         if (result.affected && result.affected === 0) {
             throw Error("No changed made to the user. Entity might be missing. Check " + id);
         }
-        return this.findOne(id).then(result => result ?? null);
+        return trx.findOne(this, id).then(result => result ?? null);
     }
 
     public static async debitBalance(id: string, amount: number) {

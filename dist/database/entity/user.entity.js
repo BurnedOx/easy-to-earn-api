@@ -58,19 +58,13 @@ let User = (() => {
                 .getMany();
         }
         static async creditBalance(id, amount, trx) {
-            let result;
-            const user = await this.findOne(id);
+            const user = await trx.findOne(this, id);
             const options = { balance: user.balance + amount };
-            if (trx) {
-                result = await trx.update(this, { id }, options);
-            }
-            else {
-                result = await this.update(id, options);
-            }
+            const result = await trx.update(this, { id }, options);
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the user. Entity might be missing. Check " + id);
             }
-            return this.findOne(id).then(result => result !== null && result !== void 0 ? result : null);
+            return trx.findOne(this, id).then(result => result !== null && result !== void 0 ? result : null);
         }
         static async debitBalance(id, amount) {
             const user = await this.findOne(id);

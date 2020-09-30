@@ -28,31 +28,18 @@ let Rapid = (() => {
             return this.find({ where: { status: 'incomplete' }, relations: ["owner"] });
         }
         static async updateToNext(ids, endDate, trx) {
-            let result;
-            const options = { amount: 2500, target: 30, endDate };
-            if (trx) {
-                result = await trx.update(this, { id: typeorm_1.In(ids) }, options);
-            }
-            else {
-                result = await this.update(ids, options);
-            }
+            let result = await trx.update(this, { id: typeorm_1.In(ids) }, { amount: 2500, target: 30, endDate });
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the challenge. Entity might be missing. Check " + ids);
             }
-            return this.findByIds(ids, { relations: ['owner'] });
+            return trx.findByIds(this, ids, { relations: ['owner'] });
         }
         static async completeChallenges(ids, trx) {
-            let result;
-            if (trx) {
-                result = await trx.update(Rapid_1, { id: typeorm_1.In(ids) }, { status: 'complete' });
-            }
-            else {
-                result = await this.update(ids, { status: 'complete' });
-            }
+            let result = await trx.update(Rapid_1, { id: typeorm_1.In(ids) }, { status: 'complete' });
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the challenge. Entity might be missing. Check " + ids);
             }
-            return this.findByIds(ids, { relations: ['owner'] });
+            return trx.findByIds(this, ids, { relations: ['owner'] });
         }
     };
     __decorate([

@@ -77,7 +77,7 @@ let RapidService = (() => {
                 const transaction = transaction_entity_1.Transaction.create({
                     owner,
                     amount: rapid.amount,
-                    currentBalance: owner.balance + rapid.amount,
+                    currentBalance: owner.balance,
                     type: 'credit',
                     remarks: 'Rapid Challenge Bonus'
                 });

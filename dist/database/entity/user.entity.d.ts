@@ -43,7 +43,7 @@ export declare class User extends Base {
         level: number;
     }[]>;
     static getAutopool(user: User): Promise<User[]>;
-    static creditBalance(id: string, amount: number, trx?: EntityManager): Promise<User>;
+    static creditBalance(id: string, amount: number, trx: EntityManager): Promise<User>;
     static debitBalance(id: string, amount: number): Promise<User>;
     toResponseObject(token?: string): UserRO;
     toMemberObject(level: number): MemberRO;

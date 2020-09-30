@@ -10,6 +10,6 @@ export declare class Rapid extends Base {
     owner: User;
     static findByOwner(ownerId: string): Promise<Rapid>;
     static findIncomplete(): Promise<Rapid[]>;
-    static updateToNext(ids: string[], endDate: Date, trx?: EntityManager): Promise<Rapid[]>;
-    static completeChallenges(ids: string[], trx?: EntityManager): Promise<Rapid[]>;
+    static updateToNext(ids: string[], endDate: Date, trx: EntityManager): Promise<Rapid[]>;
+    static completeChallenges(ids: string[], trx: EntityManager): Promise<Rapid[]>;
 }
