@@ -15,8 +15,12 @@ export class UserEpinService {
         private readonly accountsService: AccountsService,
     ) { }
 
-    getById(userId: string, status?: "used" | "unused") {
-        return UserEpin.getByUserId(userId, status);
+    async getById(userId: string, status?: "used" | "unused") {
+        const [userEPins, count] = await UserEpin.getByUserId(userId, status);
+        return [
+            userEPins.map(e => e.responseObject),
+            count
+        ]
     }
 
     async sendToAnother(userId: string, data: SendEPinDTO) {

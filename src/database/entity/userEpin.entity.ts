@@ -1,4 +1,5 @@
 import { Exclude, Expose } from "class-transformer";
+import { UserEPinRO } from "src/interfaces";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { Base } from "./base.entity";
 import { EPin } from "./epin.entity";
@@ -24,5 +25,10 @@ export class UserEpin extends Base {
             .where('owner.id = :userId', { userId })
             .andWhere('userEpin.status = :status', { status })
             .getManyAndCount()
+    }
+
+    get responseObject(): UserEPinRO {
+        const { id, updatedAt, createdAt, epin, status } = this;
+        return { id, ePinId: epin.id, status, createdAt, updatedAt };
     }
 }

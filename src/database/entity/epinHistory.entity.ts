@@ -1,3 +1,4 @@
+import { EPinHistoryRO } from "src/interfaces";
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import { Base } from "./base.entity";
 import { EPin } from "./epin.entity";
@@ -22,5 +23,10 @@ export class EpinHistory extends Base {
             .leftJoin('history.owner', 'owner')
             .where('owner.id = :ownerId', { ownerId: userId })
             .getMany();
+    }
+
+    get responseObject(): EPinHistoryRO {
+        const { id, createdAt, updatedAt, remark, epin } = this;
+        return { id, ePinId: epin.id, remark, createdAt, updatedAt };
     }
 }

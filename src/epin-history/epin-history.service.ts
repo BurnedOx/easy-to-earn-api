@@ -9,7 +9,7 @@ export class EpinHistoryService {
         return EpinHistory.create({ owner, epin, remark });
     }
 
-    getAll(userId: string) {
-        return EpinHistory.getByUserId(userId);
+    async getAll(userId: string) {
+        return (await EpinHistory.getByUserId(userId)).map(h => h.responseObject);
     }
 }

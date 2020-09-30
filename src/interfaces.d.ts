@@ -95,3 +95,19 @@ export interface TransactionRO {
     remarks: string;
     createdAt: Date;
 }
+
+export interface UserEPinRO {
+    id: string;
+    ePinId: string;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface EPinHistoryRO {
+    id: string;
+    ePinId: string;
+    remark: string;
+    createdAt: Date;
+    updatedAt: Date;
+}

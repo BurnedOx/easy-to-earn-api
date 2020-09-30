@@ -24,8 +24,12 @@ let UserEpinService = (() => {
             this.historyService = historyService;
             this.accountsService = accountsService;
         }
-        getById(userId, status) {
-            return userEpin_entity_1.UserEpin.getByUserId(userId, status);
+        async getById(userId, status) {
+            const [userEPins, count] = await userEpin_entity_1.UserEpin.getByUserId(userId, status);
+            return [
+                userEPins.map(e => e.responseObject),
+                count
+            ];
         }
         async sendToAnother(userId, data) {
             const { sendTo, total } = data;

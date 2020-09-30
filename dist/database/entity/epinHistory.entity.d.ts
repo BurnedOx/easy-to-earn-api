@@ -1,3 +1,4 @@
+import { EPinHistoryRO } from "src/interfaces";
 import { Base } from "./base.entity";
 import { EPin } from "./epin.entity";
 import { User } from "./user.entity";
@@ -6,4 +7,5 @@ export declare class EpinHistory extends Base {
     epin: EPin;
     remark: string;
     static getByUserId(userId: string): Promise<EpinHistory[]>;
+    get responseObject(): EPinHistoryRO;
 }

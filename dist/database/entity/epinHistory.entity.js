@@ -23,6 +23,10 @@ let EpinHistory = (() => {
                 .where('owner.id = :ownerId', { ownerId: userId })
                 .getMany();
         }
+        get responseObject() {
+            const { id, createdAt, updatedAt, remark, epin } = this;
+            return { id, ePinId: epin.id, remark, createdAt, updatedAt };
+        }
     };
     __decorate([
         typeorm_1.ManyToOne(() => user_entity_1.User, user => user.epinHistory, { onDelete: 'CASCADE' }),

@@ -24,6 +24,10 @@ let UserEpin = (() => {
                 .andWhere('userEpin.status = :status', { status })
                 .getManyAndCount();
         }
+        get responseObject() {
+            const { id, updatedAt, createdAt, epin, status } = this;
+            return { id, ePinId: epin.id, status, createdAt, updatedAt };
+        }
     };
     __decorate([
         typeorm_1.ManyToOne(() => user_entity_1.User, user => user.parchasedEpins, { onDelete: 'CASCADE' }),

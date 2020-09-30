@@ -16,8 +16,8 @@ let EpinHistoryService = (() => {
         createHistory(owner, epin, remark) {
             return epinHistory_entity_1.EpinHistory.create({ owner, epin, remark });
         }
-        getAll(userId) {
-            return epinHistory_entity_1.EpinHistory.getByUserId(userId);
+        async getAll(userId) {
+            return (await epinHistory_entity_1.EpinHistory.getByUserId(userId)).map(h => h.responseObject);
         }
     };
     EpinHistoryService = __decorate([
