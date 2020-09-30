@@ -12,4 +12,8 @@ export class EpinHistoryService {
     async getAll(userId: string) {
         return (await EpinHistory.getByUserId(userId)).map(h => h.responseObject);
     }
+
+    async getAdminHistory() {
+        return (await EpinHistory.getAdminHistory()).map(h => h.responseObject);
+    }
 }

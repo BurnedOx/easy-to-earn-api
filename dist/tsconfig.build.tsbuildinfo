@@ -2552,8 +2552,8 @@
         "affectsGlobalScope": false
       },
       "../src/database/entity/epinhistory.entity.ts": {
-        "version": "695eb5e432738976859059cd2127fba8e764603b185eab20967f185e0d3e108c",
-        "signature": "ef4be4306b0c507d645ba050f581d7e8f89506e512cfaa200229120900d0de8b",
+        "version": "adb48b87bf6d26152ba3198b8057146f749d922017f1fd3f95a1a1a25dad5d9f",
+        "signature": "9d635c2498e828a3e7644e333f19730029cb0ff1b226406bf89bbbd723aa133f",
         "affectsGlobalScope": false
       },
       "../src/database/entity/epin.entity.ts": {
@@ -5922,8 +5922,8 @@
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.service.ts": {
-        "version": "f71641b85f7d9207b12511e4e4165c6a25f8be97f579711d526146615e3c9455",
-        "signature": "9aca1dd78cc79e8a0961abcbbd6949e13c9648b86640ab5573ce379faef28fa1",
+        "version": "68d6f9b1d5640afc0ae83e8b6edd051bb86a248ae584620040d64b795ef7b01b",
+        "signature": "f1adfd67cf6a9c28e66fa19801e252d760ec473e66a3d683e31be8d9092649d1",
         "affectsGlobalScope": false
       },
       "../src/user-epin/user-epin.dto.ts": {
@@ -5932,7 +5932,7 @@
         "affectsGlobalScope": false
       },
       "../src/user-epin/user-epin.service.ts": {
-        "version": "a2de8d891ea803528e9a10a64814c83a42776e9316c4a3eb48ae07837e2b3f1d",
+        "version": "4ce772ba38cde7c803b0621be109f73a3e5dd4ad9085dde09de00228de25927f",
         "signature": "626d9ecf07113cb87d9c18c06cc01343bd5fb3603c6c6593b37719bd489aea78",
         "affectsGlobalScope": false
       },
@@ -5942,8 +5942,8 @@
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.controller.ts": {
-        "version": "a931a2891434846c9683fed7f057733ba80ebb9534d93a7310990a41352f056e",
-        "signature": "8b2fae944a0e7f68ba6257ce11b726a3f3b9a4e45a0ee31ec5f94a9dad379adb",
+        "version": "09645d32219f046b1449d6f47a118ccb43024c423e6628c1942f1ba2e6d7aa2e",
+        "signature": "d7c7935f2fdc7ce899b7c783f28461b5c12c3601e3a3851e2296196707c99149",
         "affectsGlobalScope": false
       },
       "../src/epin-history/epin-history.module.ts": {
@@ -18302,8 +18302,10 @@
         "../node_modules/@types/node/ts3.2/util.d.ts",
         "../node_modules/@types/node/util.d.ts",
         "../src/common/decorators/common-header-decorator.ts",
+        "../src/common/decorators/roles-decorator.ts",
         "../src/common/dto/base-header.dto.ts",
         "../src/common/guards/jwt.guard.ts",
+        "../src/common/guards/roles.guard.ts",
         "../src/common/validation.pipe.ts",
         "../src/epin-history/epin-history.service.ts"
       ],

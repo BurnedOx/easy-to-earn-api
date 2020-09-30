@@ -90,13 +90,18 @@ export class UserEpinService {
             throw new HttpException('Invalid userid to send to', HttpStatus.NOT_ACCEPTABLE);
         }
 
+        const admin = (await User.find({where: {role: 'admin'}}))[0];
         const epinToSend = epins.slice(0, total);
         const userEpins = epinToSend.map(epin => UserEpin.create({ owner, epin }));
-        const histories = epinToSend.map(epin => this.historyService.createHistory(owner, epin, `Received from Admin`));
+        const histories = epinToSend.map(epin => this.historyService
+            .createHistory(owner, epin, `Received from Admin`));
+        const adminHistory = epinToSend.map(epin => this.historyService
+            .createHistory(admin, epin, `Sent to ${owner.id} (${owner.name})`));
 
         await getManager().transaction(async trx => {
             await trx.save(userEpins);
             await trx.save(histories);
+            await trx.save(adminHistory);
         });
 
         return epinToSend.map(epin => epin.id);

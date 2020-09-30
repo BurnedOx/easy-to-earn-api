@@ -15,8 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EpinHistoryController = void 0;
 const common_1 = require("@nestjs/common");
 const common_header_decorator_1 = require("../common/decorators/common-header-decorator");
+const roles_decorator_1 = require("../common/decorators/roles-decorator");
 const base_header_dto_1 = require("../common/dto/base-header.dto");
 const jwt_guard_1 = require("../common/guards/jwt.guard");
+const roles_guard_1 = require("../common/guards/roles.guard");
 const validation_pipe_1 = require("../common/validation.pipe");
 const epin_history_service_1 = require("./epin-history.service");
 let EpinHistoryController = (() => {
@@ -26,6 +28,9 @@ let EpinHistoryController = (() => {
         }
         getAll(headers) {
             return this.epinHistoryService.getAll(headers.userId);
+        }
+        getAdminHistory() {
+            return this.epinHistoryService.getAdminHistory();
         }
     };
     __decorate([
@@ -37,6 +42,15 @@ let EpinHistoryController = (() => {
         __metadata("design:paramtypes", [base_header_dto_1.HeaderDTO]),
         __metadata("design:returntype", void 0)
     ], EpinHistoryController.prototype, "getAll", null);
+    __decorate([
+        common_1.Get('admin'),
+        roles_decorator_1.hasRoles('admin'),
+        common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
+        common_1.UsePipes(new validation_pipe_1.ValidationPipe()),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", []),
+        __metadata("design:returntype", void 0)
+    ], EpinHistoryController.prototype, "getAdminHistory", null);
     EpinHistoryController = __decorate([
         common_1.Controller('epin-history'),
         __metadata("design:paramtypes", [epin_history_service_1.EpinHistoryService])

@@ -7,5 +7,6 @@ export declare class EpinHistory extends Base {
     epin: EPin;
     remark: string;
     static getByUserId(userId: string): Promise<EpinHistory[]>;
+    static getAdminHistory(): Promise<EpinHistory[]>;
     get responseObject(): EPinHistoryRO;
 }

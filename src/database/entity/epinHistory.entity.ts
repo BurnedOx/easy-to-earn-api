@@ -25,6 +25,14 @@ export class EpinHistory extends Base {
             .getMany();
     }
 
+    public static getAdminHistory() {
+        return this.createQueryBuilder('history')
+            .leftJoinAndSelect('history.epin', 'epin')
+            .leftJoin('history.owner', 'owner')
+            .where("owner.role = 'admin'")
+            .getMany();
+    }
+
     get responseObject(): EPinHistoryRO {
         const { id, createdAt, updatedAt, remark, epin } = this;
         return { id, ePinId: epin.id, remark, createdAt, updatedAt };

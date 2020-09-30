@@ -82,12 +82,17 @@ let UserEpinService = (() => {
             if (!owner) {
                 throw new common_1.HttpException('Invalid userid to send to', common_1.HttpStatus.NOT_ACCEPTABLE);
             }
+            const admin = (await user_entity_1.User.find({ where: { role: 'admin' } }))[0];
             const epinToSend = epins.slice(0, total);
             const userEpins = epinToSend.map(epin => userEpin_entity_1.UserEpin.create({ owner, epin }));
-            const histories = epinToSend.map(epin => this.historyService.createHistory(owner, epin, `Received from Admin`));
+            const histories = epinToSend.map(epin => this.historyService
+                .createHistory(owner, epin, `Received from Admin`));
+            const adminHistory = epinToSend.map(epin => this.historyService
+                .createHistory(admin, epin, `Sent to ${owner.id} (${owner.name})`));
             await typeorm_1.getManager().transaction(async (trx) => {
                 await trx.save(userEpins);
                 await trx.save(histories);
+                await trx.save(adminHistory);
             });
             return epinToSend.map(epin => epin.id);
         }

@@ -4,4 +4,5 @@ export declare class EpinHistoryController {
     private readonly epinHistoryService;
     constructor(epinHistoryService: EpinHistoryService);
     getAll(headers: HeaderDTO): Promise<import("../interfaces").EPinHistoryRO[]>;
+    getAdminHistory(): Promise<import("../interfaces").EPinHistoryRO[]>;
 }

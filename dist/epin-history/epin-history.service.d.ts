@@ -4,4 +4,5 @@ import { User } from 'src/database/entity/user.entity';
 export declare class EpinHistoryService {
     createHistory(owner: User, epin: EPin, remark: string): EpinHistory;
     getAll(userId: string): Promise<import("../interfaces").EPinHistoryRO[]>;
+    getAdminHistory(): Promise<import("../interfaces").EPinHistoryRO[]>;
 }
