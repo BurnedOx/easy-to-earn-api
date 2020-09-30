@@ -69,8 +69,8 @@ export class RapidService {
             const owner = await User.creditBalance(rapid.owner.id, rapid.amount, trx);
             const transaction = Transaction.create({
                 owner,
-                amount: rapid.amount + rapid.amount,
-                currentBalance: owner.balance,
+                amount: rapid.amount,
+                currentBalance: owner.balance + rapid.amount,
                 type: 'credit',
                 remarks: 'Rapid Challenge Bonus'
             });

@@ -76,8 +76,8 @@ let RapidService = (() => {
                 const owner = await user_entity_1.User.creditBalance(rapid.owner.id, rapid.amount, trx);
                 const transaction = transaction_entity_1.Transaction.create({
                     owner,
-                    amount: rapid.amount + rapid.amount,
-                    currentBalance: owner.balance,
+                    amount: rapid.amount,
+                    currentBalance: owner.balance + rapid.amount,
                     type: 'credit',
                     remarks: 'Rapid Challenge Bonus'
                 });
