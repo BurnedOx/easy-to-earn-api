@@ -10,10 +10,6 @@ exports.AccountsModule = void 0;
 const common_1 = require("@nestjs/common");
 const accounts_controller_1 = require("./accounts.controller");
 const accounts_service_1 = require("./accounts.service");
-const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("../database/entity/user.entity");
-const epin_entity_1 = require("../database/entity/epin.entity");
-const rank_module_1 = require("../rank/rank.module");
 const income_module_1 = require("../income/income.module");
 const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
@@ -21,15 +17,12 @@ const jwt_guard_1 = require("../common/guards/jwt.guard");
 const jwt_strategy_1 = require("../common/guards/jwt.strategy");
 const aws_1 = require("../common/aws/aws");
 const rapid_module_1 = require("../rapid/rapid.module");
-const transaction_entity_1 = require("../database/entity/transaction.entity");
 let AccountsModule = (() => {
     let AccountsModule = class AccountsModule {
     };
     AccountsModule = __decorate([
         common_1.Module({
             imports: [
-                typeorm_1.TypeOrmModule.forFeature([user_entity_1.User, epin_entity_1.EPin, transaction_entity_1.Transaction]),
-                rank_module_1.RankModule,
                 income_module_1.IncomeModule,
                 rapid_module_1.RapidModule,
                 jwt_1.JwtModule.registerAsync({

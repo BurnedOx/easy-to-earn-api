@@ -1,25 +1,17 @@
 import { User } from 'src/database/entity/user.entity';
-import { Repository } from 'typeorm';
 import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO } from './accounts.dto';
-import { EPin } from 'src/database/entity/epin.entity';
-import { RankService } from 'src/rank/rank.service';
 import { IncomeService } from 'src/income/income.service';
 import { UserDetailsRO, UserRO } from 'src/interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 import { AWSHandler } from 'src/common/aws/aws';
 import { RapidService } from 'src/rapid/rapid.service';
-import { Transaction } from 'src/database/entity/transaction.entity';
 export declare class AccountsService {
-    private readonly userRepo;
-    private readonly epinRepo;
-    private readonly trxRepo;
     private readonly incomeService;
-    private readonly rankService;
     private readonly rapidService;
     private readonly jwtService;
     private readonly aws;
-    constructor(userRepo: Repository<User>, epinRepo: Repository<EPin>, trxRepo: Repository<Transaction>, incomeService: IncomeService, rankService: RankService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
+    constructor(incomeService: IncomeService, rapidService: RapidService, jwtService: JwtService, aws: AWSHandler);
     findOne(id: string): Observable<UserRO>;
     getName(id: string): Observable<string>;
     getAll(): Promise<UserRO[]>;
@@ -34,7 +26,7 @@ export declare class AccountsService {
     updateBankDetails(data: BankDTO, userId: string): Promise<string>;
     updateSponsor(userId: string, sponsorId: string): Promise<UserRO>;
     resetBalance(): Promise<string>;
-    creditBalance(userId: string, amount: number): Promise<string>;
+    creditBalance(userId: string, amount: number): Promise<User>;
     debitBalance(userId: string, amount: number): Promise<string>;
     deleteUser(id: string): Promise<string>;
     private generateJWT;

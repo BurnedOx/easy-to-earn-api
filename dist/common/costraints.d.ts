@@ -1,4 +1,3 @@
-import { RankData } from "src/interfaces";
 export declare const levelIncomeAmount: {
     1: number;
     2: number;
@@ -11,4 +10,4 @@ export declare const levelIncomeAmount: {
     9: number;
     10: number;
 };
-export declare const Ranks: RankData[];
+export declare const EPIN_PRICE = 599;

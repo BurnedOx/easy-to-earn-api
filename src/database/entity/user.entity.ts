@@ -1,17 +1,14 @@
 import { Base } from "./base.entity";
 import { Column, Entity, OneToMany, JoinColumn, ManyToOne, BeforeInsert, OneToOne, ManyToMany, JoinTable, EntityManager, UpdateResult } from "typeorm";
-import { BankDetails, UserRO, MemberRO, AutopoolMemberRO } from "src/interfaces";
+import { BankDetails, UserRO, MemberRO } from "src/interfaces";
 import * as bcrypct from 'bcryptjs';
 import { EPin } from "./epin.entity";
 import { Income } from "./income.entity";
-import { Rank } from "./rank.entity";
 import { Withdrawal } from "./withdrawal.entity";
 import { Transaction } from "./transaction.entity";
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
-import { Expose } from "class-transformer";
 import { Rapid } from "./rapid.entity";
-import { userInfo } from "os";
 import { UserEpin } from "./userEpin.entity";
 import { EpinHistory } from "./epinHistory.entity";
 
@@ -34,12 +31,6 @@ export class User extends Base {
 
     @Column({ nullable: true, default: null })
     activatedAt: Date | null;
-
-    @Column({ default: 0 })
-    totalAutopool: number;
-
-    @Column({ nullable: true, default: null })
-    autopooledAt: Date | null;
 
     @Column({ type: 'jsonb', nullable: true, default: null })
     bankDetails: BankDetails | null;
@@ -70,9 +61,6 @@ export class User extends Base {
     @OneToMany(() => Income, income => income.from)
     generatedIncomes: Income[];
 
-    @OneToMany(() => Rank, rank => rank.owner)
-    ranks: Rank[];
-
     @OneToMany(() => Withdrawal, withdrawal => withdrawal.owner)
     withdrawals: Withdrawal[];
 
@@ -97,6 +85,15 @@ export class User extends Base {
         return from(this.findOne({ id })).pipe(
             map((user: User) => user)
         );
+    }
+
+    public static getProfile(userId: string) {
+        return this.createQueryBuilder("user")
+            .leftJoinAndSelect('user.sponsored', 'sponsored')
+            .leftJoinAndSelect('user.incomes', 'incomes')
+            .leftJoinAndSelect('user.withdrawals', 'withdrawals')
+            .where('user.id = :userId', { userId })
+            .getOne();
     }
 
     public static findDirectForRapid(sponsorId: string, startDate: Date, endDate: Date) {
@@ -124,22 +121,15 @@ export class User extends Base {
         return downline;
     }
 
-    public static getAutopool(user: User) {
-        return this.createQueryBuilder('user')
-            .where('user.activatedAt IS NOT NULL')
-            .andWhere('user.autopooledAt IS NOT NULL')
-            .andWhere("user.autopooledAt > :aDate", { aDate: user.autopooledAt })
-            .getMany();
-    }
-
-    public static async creditBalance(id: string, amount: number, trx: EntityManager) {
-        const user = await trx.findOne(this, id);
+    public static async creditBalance(id: string, amount: number, trx?: EntityManager) {
+        const user = await (trx ? trx.findOne(this, id) : this.findOne(id));
         const options = { balance: user.balance + amount };
-        const result = await trx.update(this, { id }, options)
+        const result = await (trx ? trx.update(this, { id }, options) : this.update(id, options));
         if (result.affected && result.affected === 0) {
             throw Error("No changed made to the user. Entity might be missing. Check " + id);
         }
-        return trx.findOne(this, id).then(result => result ?? null);
+        return (trx ? trx.findOne(this, id) : this.findOne(id))
+            .then(result => result ?? null);
     }
 
     public static async debitBalance(id: string, amount: number) {
@@ -167,11 +157,6 @@ export class User extends Base {
     toMemberObject(level: number): MemberRO {
         const { id, name, status, activatedAt, createdAt } = this;
         return { id, name, level, status, createdAt, activatedAt };
-    }
-
-    toAutopoolMemberObject(): AutopoolMemberRO {
-        const { id, name, autopooledAt } = this;
-        return { id, name, autopooledAt };
     }
 
     async comparePassword(attempt: string) {

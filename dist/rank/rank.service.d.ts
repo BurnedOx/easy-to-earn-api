@@ -9,7 +9,7 @@ export declare class RankService {
     private readonly trxRepo;
     private readonly logging;
     constructor(rankRepo: Repository<Rank>, userRepo: Repository<User>, trxRepo: Repository<Transaction>);
-    getRanks(userId: string): Promise<Rank[]>;
+    getRanks(userId: string): Promise<any[]>;
     generateRanks(userId: string): Promise<void>;
     createRank(data: RankDTO): Promise<string>;
     private getRank;

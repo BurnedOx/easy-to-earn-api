@@ -5,5 +5,5 @@ export declare class RankController {
     private readonly rankService;
     constructor(rankService: RankService);
     createRank(data: RankDTO): Promise<string>;
-    getRanks(headers: HeaderDTO): Promise<import("../database/entity/rank.entity").Rank[]>;
+    getRanks(headers: HeaderDTO): Promise<any[]>;
 }

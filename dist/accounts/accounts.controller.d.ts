@@ -22,7 +22,7 @@ export declare class AccountsController {
     updateBankDetailsByAdmin(id: string, data: BankDTO): Promise<string>;
     updateSponsor(sponsorId: string, id: string): Promise<import("../interfaces").UserRO>;
     resetWallets(): Promise<string>;
-    creditUser(data: WalletDTO): Promise<string>;
+    creditUser(data: WalletDTO): Promise<import("../database/entity/user.entity").User>;
     debitUser(data: WalletDTO): Promise<string>;
     deleteUser(id: string): Promise<string>;
 }

@@ -6,7 +6,4 @@ export declare class MembersController {
     directMembers(headers: HeaderDTO): Promise<import("../interfaces").MemberRO[]>;
     adminGetDirect(id: string): Promise<import("../interfaces").MemberRO[]>;
     downlineMembers(headers: HeaderDTO): Promise<import("../interfaces").MemberRO[]>;
-    autopoolMembers(headers: HeaderDTO): Promise<import("../interfaces").AutopoolMemberRO[]>;
-    getAdminAutopool(id: string): Promise<import("../interfaces").AutopoolMemberRO[]>;
-    updateAutopool(): Promise<string>;
 }

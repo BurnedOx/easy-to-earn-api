@@ -15,7 +15,6 @@ const typeorm_1 = require("typeorm");
 const bcrypct = require("bcryptjs");
 const epin_entity_1 = require("./epin.entity");
 const income_entity_1 = require("./income.entity");
-const rank_entity_1 = require("./rank.entity");
 const withdrawal_entity_1 = require("./withdrawal.entity");
 const transaction_entity_1 = require("./transaction.entity");
 const rxjs_1 = require("rxjs");
@@ -31,6 +30,14 @@ let User = (() => {
         }
         static findById(id) {
             return rxjs_1.from(this.findOne({ id })).pipe(operators_1.map((user) => user));
+        }
+        static getProfile(userId) {
+            return this.createQueryBuilder("user")
+                .leftJoinAndSelect('user.sponsored', 'sponsored')
+                .leftJoinAndSelect('user.incomes', 'incomes')
+                .leftJoinAndSelect('user.withdrawals', 'withdrawals')
+                .where('user.id = :userId', { userId })
+                .getOne();
         }
         static findDirectForRapid(sponsorId, startDate, endDate) {
             return this.createQueryBuilder('user')
@@ -50,21 +57,15 @@ let User = (() => {
             }
             return downline;
         }
-        static getAutopool(user) {
-            return this.createQueryBuilder('user')
-                .where('user.activatedAt IS NOT NULL')
-                .andWhere('user.autopooledAt IS NOT NULL')
-                .andWhere("user.autopooledAt > :aDate", { aDate: user.autopooledAt })
-                .getMany();
-        }
         static async creditBalance(id, amount, trx) {
-            const user = await trx.findOne(this, id);
+            const user = await (trx ? trx.findOne(this, id) : this.findOne(id));
             const options = { balance: user.balance + amount };
-            const result = await trx.update(this, { id }, options);
+            const result = await (trx ? trx.update(this, { id }, options) : this.update(id, options));
             if (result.affected && result.affected === 0) {
                 throw Error("No changed made to the user. Entity might be missing. Check " + id);
             }
-            return trx.findOne(this, id).then(result => result !== null && result !== void 0 ? result : null);
+            return (trx ? trx.findOne(this, id) : this.findOne(id))
+                .then(result => result !== null && result !== void 0 ? result : null);
         }
         static async debitBalance(id, amount) {
             const user = await this.findOne(id);
@@ -90,10 +91,6 @@ let User = (() => {
         toMemberObject(level) {
             const { id, name, status, activatedAt, createdAt } = this;
             return { id, name, level, status, createdAt, activatedAt };
-        }
-        toAutopoolMemberObject() {
-            const { id, name, autopooledAt } = this;
-            return { id, name, autopooledAt };
         }
         async comparePassword(attempt) {
             return await bcrypct.compare(attempt, this.password);
@@ -123,14 +120,6 @@ let User = (() => {
         typeorm_1.Column({ nullable: true, default: null }),
         __metadata("design:type", Date)
     ], User.prototype, "activatedAt", void 0);
-    __decorate([
-        typeorm_1.Column({ default: 0 }),
-        __metadata("design:type", Number)
-    ], User.prototype, "totalAutopool", void 0);
-    __decorate([
-        typeorm_1.Column({ nullable: true, default: null }),
-        __metadata("design:type", Date)
-    ], User.prototype, "autopooledAt", void 0);
     __decorate([
         typeorm_1.Column({ type: 'jsonb', nullable: true, default: null }),
         __metadata("design:type", Object)
@@ -169,10 +158,6 @@ let User = (() => {
         typeorm_1.OneToMany(() => income_entity_1.Income, income => income.from),
         __metadata("design:type", Array)
     ], User.prototype, "generatedIncomes", void 0);
-    __decorate([
-        typeorm_1.OneToMany(() => rank_entity_1.Rank, rank => rank.owner),
-        __metadata("design:type", Array)
-    ], User.prototype, "ranks", void 0);
     __decorate([
         typeorm_1.OneToMany(() => withdrawal_entity_1.Withdrawal, withdrawal => withdrawal.owner),
         __metadata("design:type", Array)

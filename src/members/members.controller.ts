@@ -32,26 +32,4 @@ export class MembersController {
     downlineMembers(@CustomHeader() headers: HeaderDTO) {
         return this.membersService.downlineMembers(headers.userId);
     }
-
-    @Get('autopool')
-    @UseGuards(JwtAuthGuard)
-    @UsePipes(new ValidationPipe())
-    autopoolMembers(@CustomHeader() headers: HeaderDTO) {
-        return this.membersService.autopoolMembers(headers.userId);
-    }
-
-    @Get(':id/autopool')
-    @hasRoles('admin')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @UsePipes(new ValidationPipe())
-    getAdminAutopool(@Param('id') id: string) {
-        return this.membersService.autopoolMembers(id);
-    }
-
-    @Put('update-autopool')
-    @hasRoles('admin')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    updateAutopool() {
-        return this.membersService.updateAutopool();
-    }
 }

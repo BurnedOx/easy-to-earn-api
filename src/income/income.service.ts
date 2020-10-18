@@ -8,30 +8,19 @@ import { Transaction } from 'src/database/entity/transaction.entity';
 
 @Injectable()
 export class IncomeService {
-    constructor(
-        @InjectRepository(Income)
-        private readonly incomeRepo: Repository<Income>,
-
-        @InjectRepository(User)
-        private readonly userRepo: Repository<User>,
-
-        @InjectRepository(Transaction)
-        private readonly trxRepo: Repository<Transaction>
-    ) { }
-
     async getIncomes(userId: string) {
-        const user = await this.userRepo.findOne(userId);
+        const user = await User.findOne(userId);
         if (!user) {
             throw new HttpException('user not found', HttpStatus.NOT_FOUND);
         }
-        const incomes = await this.incomeRepo.find({ where: { owner: user }, relations: ['owner', 'from'] });
+        const incomes = await Income.find({ where: { owner: user }, relations: ['owner', 'from'] });
         return incomes.map(i => i.toResponseObject());
     }
 
     async removePayments(incomes: Income[], trx: EntityManager) {
-        const incomesWithOwner = await this.incomeRepo.findByIds(incomes.map(i => i.id), { relations: ['owner'] });
+        const incomesWithOwner = await Income.findByIds(incomes.map(i => i.id), { relations: ['owner'] });
         for (let i of incomesWithOwner) {
-            const owner = await this.userRepo.findOne(i.owner.id);
+            const owner = await User.findOne(i.owner.id);
             owner.balance = owner.balance - i.amount;
             await trx.save(owner);
         }
@@ -43,53 +32,26 @@ export class IncomeService {
     async generateIncomes(from: User, trx: EntityManager) {
         if (from.status === 'inactive') return;
         let level: number = 1;
-        let sponsor: User = await this.userRepo.findOne(from.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks', 'sponsored'] });
+        let sponsor = await trx.findOne(User, from.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks'] });
         while (level <= 10 && sponsor.role === 'user') {
-            let amount: number;
-            if (sponsor.autopooledAt === null && level === 1) {
-                amount = levelIncomeAmount[level] - 100;
-            } else {
-                amount = levelIncomeAmount[level];
-            }
-            // if (level === 1)
-            //     console.log('amount to be added: ' + amount, 'current balance: ' + sponsor.balance)
+            const amount = levelIncomeAmount[level];
             sponsor.balance = sponsor.balance + amount;
             await trx.save(sponsor);
-            // if (level === 1)
-            //     console.log('updated balance: ' + sponsor.balance);
-            const income = this.incomeRepo.create({
+            const income = Income.create({
                 owner: sponsor,
                 currentBalance: sponsor.balance,
                 level, from, amount
             });
             await trx.save(income);
-            const transaction = this.trxRepo.create({
+            const transaction = Transaction.create({
                 currentBalance: sponsor.balance,
                 type: 'credit',
                 remarks: `From level ${level} income`,
                 owner: sponsor, amount
             });
             await trx.save(transaction);
-            await this.generateLeadershipBonus(sponsor, level, trx);
-            sponsor = await this.userRepo.findOne(sponsor.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks', 'sponsored'] });
+            sponsor = await trx.findOne(User, sponsor.sponsoredBy.id, { relations: ['sponsoredBy', 'ranks'] });
             level++;
         }
-    }
-
-    private async generateLeadershipBonus(leader: User, level: number, trx: EntityManager) {
-        const rankNames = leader.ranks.map(r => r.rank);
-        if (!rankNames.includes('RANK7')) {
-            return;
-        }
-        leader.balance = leader.balance + 5;
-        await trx.save(leader);
-        const transaction = this.trxRepo.create({
-            amount: 5,
-            currentBalance: leader.balance,
-            type: 'credit',
-            remarks: `${leader.ranks[leader.ranks.length - 1]?.rank} Leadership Bonus from level ${level}`,
-            owner: leader
-        });
-        await trx.save(transaction);
     }
 }

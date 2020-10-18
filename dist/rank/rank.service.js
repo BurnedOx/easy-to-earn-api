@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RankService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const rank_entity_1 = require("../database/entity/rank.entity");
+const rank_entity_1 = require("src/database/entity/rank.entity");
 const typeorm_2 = require("typeorm");
 const user_entity_1 = require("../database/entity/user.entity");
 const costraints_1 = require("../common/costraints");

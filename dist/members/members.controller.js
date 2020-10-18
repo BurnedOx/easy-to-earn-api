@@ -35,15 +35,6 @@ let MembersController = (() => {
         downlineMembers(headers) {
             return this.membersService.downlineMembers(headers.userId);
         }
-        autopoolMembers(headers) {
-            return this.membersService.autopoolMembers(headers.userId);
-        }
-        getAdminAutopool(id) {
-            return this.membersService.autopoolMembers(id);
-        }
-        updateAutopool() {
-            return this.membersService.updateAutopool();
-        }
     };
     __decorate([
         common_1.Get('direct'),
@@ -73,33 +64,6 @@ let MembersController = (() => {
         __metadata("design:paramtypes", [base_header_dto_1.HeaderDTO]),
         __metadata("design:returntype", void 0)
     ], MembersController.prototype, "downlineMembers", null);
-    __decorate([
-        common_1.Get('autopool'),
-        common_1.UseGuards(jwt_guard_1.JwtAuthGuard),
-        common_1.UsePipes(new validation_pipe_1.ValidationPipe()),
-        __param(0, common_header_decorator_1.CustomHeader()),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [base_header_dto_1.HeaderDTO]),
-        __metadata("design:returntype", void 0)
-    ], MembersController.prototype, "autopoolMembers", null);
-    __decorate([
-        common_1.Get(':id/autopool'),
-        roles_decorator_1.hasRoles('admin'),
-        common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-        common_1.UsePipes(new validation_pipe_1.ValidationPipe()),
-        __param(0, common_1.Param('id')),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [String]),
-        __metadata("design:returntype", void 0)
-    ], MembersController.prototype, "getAdminAutopool", null);
-    __decorate([
-        common_1.Put('update-autopool'),
-        roles_decorator_1.hasRoles('admin'),
-        common_1.UseGuards(jwt_guard_1.JwtAuthGuard, roles_guard_1.RolesGuard),
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", []),
-        __metadata("design:returntype", void 0)
-    ], MembersController.prototype, "updateAutopool", null);
     MembersController = __decorate([
         common_1.Controller('members'),
         __metadata("design:paramtypes", [members_service_1.MembersService])

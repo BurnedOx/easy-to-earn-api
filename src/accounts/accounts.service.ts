@@ -4,11 +4,9 @@ import { User } from 'src/database/entity/user.entity';
 import { Repository, getManager } from 'typeorm';
 import { RegistrationDTO, LoginDTO, AdminRegistrationDTO, UpdatePasswordDTO, ProfileDTO, BankDTO } from './accounts.dto';
 import { EPin } from 'src/database/entity/epin.entity';
-import { RankService } from 'src/rank/rank.service';
 import { IncomeService } from 'src/income/income.service';
 import * as bcrypct from 'bcryptjs';
 import { UserDetailsRO, UserRO } from 'src/interfaces';
-import { Ranks } from 'src/common/costraints';
 import { JwtService } from '@nestjs/jwt';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,18 +17,7 @@ import { Transaction } from 'src/database/entity/transaction.entity';
 @Injectable()
 export class AccountsService {
     constructor(
-        @InjectRepository(User)
-        private readonly userRepo: Repository<User>,
-
-        @InjectRepository(EPin)
-        private readonly epinRepo: Repository<EPin>,
-
-        @InjectRepository(Transaction)
-        private readonly trxRepo: Repository<Transaction>,
-
         private readonly incomeService: IncomeService,
-
-        private readonly rankService: RankService,
 
         private readonly rapidService: RapidService,
 
@@ -40,7 +27,7 @@ export class AccountsService {
     ) { }
 
     findOne(id: string): Observable<UserRO> {
-        return from(this.userRepo.findOne(id, { relations: ['sponsoredBy', 'epin', 'ranks'] })).pipe(
+        return from(User.findOne(id, { relations: ['sponsoredBy', 'epin'] })).pipe(
             map((user) => user?.toResponseObject())
         )
     }
@@ -50,13 +37,13 @@ export class AccountsService {
     }
 
     async getAll() {
-        const users = await this.userRepo.find({ relations: ['sponsoredBy', 'epin', 'ranks'] });
+        const users = await User.find({ relations: ['sponsoredBy', 'epin'] });
         return users.map(user => user.toResponseObject());
     }
 
     async login(data: LoginDTO, admin: boolean = false) {
         const { userId, password } = data;
-        const user = await this.userRepo.findOne(userId, { relations: ['sponsoredBy', 'epin', 'ranks'] });
+        const user = await User.findOne(userId, { relations: ['sponsoredBy', 'epin'] });
 
         if (!user || !(await user.comparePassword(password)) || (admin && user.role !== 'admin')) {
             throw new HttpException('Invalid userid/password', HttpStatus.BAD_REQUEST);
@@ -67,18 +54,18 @@ export class AccountsService {
 
     async register(data: RegistrationDTO) {
         const { name, password, mobile, sponsorId } = data;
-        const sponsoredBy = await this.userRepo.findOne(sponsorId);
+        const sponsoredBy = await User.findOne(sponsorId);
         if (!sponsoredBy) {
             throw new HttpException('Invalid sponspor id', HttpStatus.BAD_REQUEST);
         }
         if (sponsoredBy.status !== 'active') {
             throw new HttpException('Inactive sponsor', HttpStatus.BAD_REQUEST);
         }
-        const user = await this.userRepo.create({
+        const user = User.create({
             role: 'user',
             name, password, mobile, sponsoredBy
         });
-        await this.userRepo.save(user);
+        await user.save();
         const token = await this.generateJWT(user.id);
         this.aws.sendSMS(
             `Wellcome to Easy2Earn\n
@@ -93,66 +80,42 @@ export class AccountsService {
     }
 
     async getDetails(userId: string): Promise<UserDetailsRO> {
-        const user1 = await this.userRepo.createQueryBuilder("user")
-            .leftJoinAndSelect('user.sponsored', 'sponsored')
-            .leftJoinAndSelect('user.ranks', 'ranks')
-            .where('user.id = :userId', { userId })
-            .getOne();
+        const user = await User.getProfile(userId);
 
-        if (!user1) {
+        if (!user) {
             throw new HttpException('user not found', HttpStatus.NOT_FOUND);
         }
 
-        const user2 = await this.userRepo.createQueryBuilder("user")
-            .leftJoinAndSelect('user.incomes', 'incomes')
-            .leftJoinAndSelect('user.withdrawals', 'withdrawals')
-            .where('user.id = :userId', { userId })
-            .getOne();
+        const { balance: wallet, sponsored, incomes, withdrawals } = user;
 
-        const {
-            balance: wallet,
-            ranks,
-            sponsored,
-            totalAutopool: autopool
-        } = user1;
-
-        const { incomes, withdrawals } = user2;
-
-        ranks?.sort((a, b) => {
-            const aRank = Ranks.find(r => r.type === a.rank);
-            const bRank = Ranks.find(r => r.type === b.rank);
-            return (bRank.autopool - aRank.autopool);
-        });
         const incomeAmounts = incomes.map(i => i.amount);
         const withdrawAmounts = withdrawals.filter(w => w.status === 'paid').map(w => w.withdrawAmount);
-        const rank = ranks ? (ranks[0]?.rank ?? null) : null
         const direct = sponsored.length;
-        const downline = (await User.getDownline(user1)).length;
+        const downline = (await User.getDownline(user)).length;
         const levelIncome = incomeAmounts.length !== 0 ? incomeAmounts.reduce((a, b) => a + b) : 0;
-        const autopoolIncome = ranks.length !== 0 ? ranks.map(r => r.income).reduce((a, b) => a + b) : 0;
         const totalWithdrawal = withdrawAmounts.length !== 0 ? withdrawAmounts.reduce((a, b) => a + b) : 0;
-        const totalIncome = levelIncome + autopoolIncome;
+        const totalIncome = levelIncome;
 
         return {
-            wallet, rank, direct, downline, autopool, levelIncome, autopoolIncome, totalWithdrawal, totalIncome
+            wallet, direct, downline, levelIncome, totalWithdrawal, totalIncome
         };
     }
 
     async registerAdmin(data: AdminRegistrationDTO) {
         const { name, mobile, password } = data;
-        const user = await this.userRepo.create({
+        const user = User.create({
             role: 'admin',
             sponsoredBy: null,
             status: 'active',
             name, mobile, password,
         });
-        await this.userRepo.save(user);
+        await user.save();
         const token = await this.generateJWT(user.id);
         return user.toResponseObject(token);
     }
 
     async activateAccount(epinId: string, userId: string) {
-        let epin = await this.epinRepo.findOne(epinId, { relations: ['owner'] });
+        let epin = await EPin.findOne(epinId, { relations: ['owner'] });
 
         if (!epin) {
             throw new HttpException('Invalid E-Pin', HttpStatus.NOT_FOUND);
@@ -161,7 +124,7 @@ export class AccountsService {
             throw new HttpException('E-Pin already used', HttpStatus.BAD_REQUEST);
         }
 
-        const user = await this.userRepo.findOne(userId, { relations: ['sponsoredBy', 'epin', 'ranks'] });
+        const user = await User.findOne(userId, { relations: ['sponsoredBy', 'epin'] });
 
         if (!user) {
             throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -177,25 +140,13 @@ export class AccountsService {
             await trx.save(user);
             await this.incomeService.generateIncomes(user, trx);
             await this.rapidService.newChallenge(user, trx);
-            const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });
-            const actives = sponsor.sponsored.filter(u => u.activatedAt !== null);
-            if (actives.length === 2) {
-                sponsor.autopooledAt = new Date();
-                await trx.save(sponsor);
-            }
         });
-
-        const sponsor = await this.userRepo.findOne(user.sponsoredBy.id, { relations: ['sponsored'] });
-        const actives = sponsor.sponsored.filter(u => u.activatedAt !== null);
-        if (actives.length === 3) {
-            this.rankService.generateRanks(sponsor.id);
-        }
 
         return user.toResponseObject();
     }
 
     async updateProfile(data: ProfileDTO, userId: string) {
-        const user = await this.userRepo.update(userId, data);
+        const user = await User.update(userId, data);
         if (user.affected > 0) {
             return 'ok';
         } else {
@@ -205,33 +156,33 @@ export class AccountsService {
 
     async updatePassword(data: UpdatePasswordDTO, userId: string) {
         const { oldPassword, newPassword } = data;
-        const user = await this.userRepo.findOne(userId);
+        const user = await User.findOne(userId);
 
         if (!user || !(await user.comparePassword(oldPassword))) {
             throw new HttpException('Invalid password', HttpStatus.BAD_REQUEST);
         }
 
         user.password = await bcrypct.hash(newPassword, 10);
-        await this.userRepo.save(user);
+        await user.save();
 
         return 'ok';
     }
 
     async forgotPassword(id: string, newPassword: string) {
-        const user = await this.userRepo.findOne({ id });
+        const user = await User.findOne(id);
 
         if (!user) {
             throw new HttpException('User Not Found', HttpStatus.NOT_FOUND);
         }
 
         user.password = await bcrypct.hash(newPassword, 10);
-        await this.userRepo.save(user);
+        await user.save();
 
         return 'ok';
     }
 
     async updateBankDetails(data: BankDTO, userId: string) {
-        const user = await this.userRepo.update(userId, { bankDetails: data });
+        const user = await User.update(userId, { bankDetails: data });
         if (user.affected > 0) {
             return 'ok';
         } else {
@@ -240,11 +191,11 @@ export class AccountsService {
     }
 
     async updateSponsor(userId: string, sponsorId: string) {
-        const sponsor = await this.userRepo.findOne(sponsorId);
+        const sponsor = await User.findOne(sponsorId);
         if (!sponsor && !(sponsor.status === 'active')) {
             throw new HttpException('Invalid Sponsor', HttpStatus.BAD_REQUEST);
         }
-        const user = await this.userRepo.findOne(userId, { relations: ['generatedIncomes', 'sponsoredBy', 'epin'] });
+        const user = await User.findOne(userId, { relations: ['generatedIncomes', 'sponsoredBy', 'epin'] });
         if (!user) {
             throw new HttpException('user not found', HttpStatus.NOT_FOUND);
         }
@@ -260,7 +211,7 @@ export class AccountsService {
     }
 
     async resetBalance() {
-        const users = await this.userRepo.find();
+        const users = await User.find();
         await getManager().transaction(async trx => {
             for (let user of users) {
                 user.balance = 0;
@@ -270,22 +221,23 @@ export class AccountsService {
         return 'ok';
     }
 
-    async creditBalance(userId: string, amount: number) {
-        const user = await this.userRepo.findOne(userId);
-        user.balance = user.balance + amount;
-        await user.save();
-        return 'ok';
+    creditBalance(userId: string, amount: number) {
+        try {
+            return User.creditBalance(userId, amount);
+        } catch (e) {
+            throw new HttpException((e as Error).message, HttpStatus.BAD_REQUEST);
+        }
     }
 
     async debitBalance(userId: string, amount: number) {
-        const user = await this.userRepo.findOne(userId);
+        const user = await User.findOne(userId);
         if (user.balance < amount) {
             throw new HttpException('Insufficient balance', HttpStatus.BAD_REQUEST);
         }
         getManager().transaction(async (trx) => {
             user.balance = user.balance - amount;
             await trx.save(user);
-            const transaction = this.trxRepo.create({
+            const transaction = Transaction.create({
                 amount,
                 currentBalance: user.balance,
                 type: 'debit',
@@ -299,7 +251,7 @@ export class AccountsService {
     }
 
     async deleteUser(id: string) {
-        await this.userRepo.delete(id);
+        await User.delete(id);
         return 'ok';
     }
 
